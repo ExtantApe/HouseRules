@@ -8,7 +8,7 @@ These run HouseRules on a real Paper server and drive it with protocol bots. The
 
 - **Real:** Paper, LuckPerms, the plugin jar, Paper's chat and command handling, and private messages through vanilla `/msg`, `/tell` and `/w`.
 - **A bot, not the game:** the players are [mineflayer](https://github.com/PrismarineJS/mineflayer) bots, which speak the 1.21.11 protocol and join 26.x through ViaVersion and ViaBackwards. They read chat as plain text, so colours and how the messages look aren't checked.
-- **Mocked:** BlueMapHUD's share. A stand-in plugin named BlueMapHUD (`fakehud/`) fires a copy of its `CoordinateShareEvent`. The copy matches the event in BlueMapHUD 0.1.0, compared with `javap`, but the real BlueMapHUD isn't run.
+- **Mocked:** BlueMapHUD's share. A stand-in plugin named BlueMapHUD (`fakehud/`) fires a copy of its `CoordinateShareEvent`. The copy matches the event in BlueMapHUD 0.1.0, compared with `javap`, but the real BlueMapHUD isn't run here. A separate check with the real BlueMapHUD 0.1.0 and HouseRules 0.1.0 jars passed on Paper 26.2 on 2026-11-08 (11 of 11, bots, permissions set without LuckPerms). That test isn't in this repo.
 - **Not covered:** signs and anvil renames, which the bot can't do reliably. They go through the same check as books, which is covered. Paper has no `/r` of its own, so a reply that passes is seen as reaching the server, not as delivered.
 
 ## Setting up
