@@ -2,7 +2,7 @@
 
 Chat rules for family and community Paper servers. Players hear people in the same world, plus anyone who shares a "circle" with them, so groups such as families or age groups keep their own conversations across every world.
 
-**Status:** pre-release. The unit tests pass. It hasn't been run on a live server yet.
+**Status:** pre-release. It has passed its acceptance tests on throwaway Paper 26.2 and 26.3 servers, using protocol bots with LuckPerms. That covers chat and private messages for every pair of players, replies, blocked commands, the word filter, books, `/circles`, reloads and 20 bots chatting at once. Signs and anvil renames weren't tested, and the BlueMapHUD share was tested with a stand-in plugin. It hasn't been seen in a real game client yet, so the wording and colours haven't been checked by a person. See [the live tests](test/live/README.md).
 
 - Requires Paper 26.1 or newer and Java 25. Paper 1.21.11 and older aren't supported.
 - With no circles set up it changes nothing about who hears whom, so it's safe to install first and configure after.

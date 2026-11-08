@@ -17,6 +17,8 @@ import java.util.Locale;
  *   hrt world <name>          makes a small flat world (a name ending in _nether or _the_end gets that environment)
  *   hrt tp <player> <world>   moves a player to a world's spawn
  *   hrt tps                   prints "HRT tps <1m> mspt <avg>"
+ *   hrt worlds                prints "HRT worlds <name,name,...>"
+ *   hrt give <player> <item>  puts one item in the player's main hand
  */
 public final class LiveTestHelper extends JavaPlugin {
     @Override
@@ -40,6 +42,23 @@ public final class LiveTestHelper extends JavaPlugin {
                                 return 0;
                             }
                             p.teleportAsync(w.getSpawnLocation()).thenAccept(ok -> getLogger().info("HRT tp " + p.getName() + " " + w.getName() + " " + ok));
+                            return 1;
+                        }))))
+                .then(Commands.literal("worlds").executes(ctx -> {
+                    getLogger().info("HRT worlds " + String.join(",", Bukkit.getWorlds().stream().map(World::getName).toList()));
+                    return 1;
+                }))
+                .then(Commands.literal("give").then(Commands.argument("player", StringArgumentType.word())
+                        .then(Commands.argument("item", StringArgumentType.word()).executes(ctx -> {
+                            Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx, "player"));
+                            org.bukkit.Material m = org.bukkit.Material.matchMaterial(StringArgumentType.getString(ctx, "item"));
+                            if (p == null || m == null) {
+                                getLogger().info("HRT give FAILED");
+                                return 0;
+                            }
+                            p.getInventory().setHeldItemSlot(0);
+                            p.getInventory().setItem(0, new org.bukkit.inventory.ItemStack(m));
+                            getLogger().info("HRT give " + p.getName() + " " + m.getKey().getKey());
                             return 1;
                         }))))
                 .then(Commands.literal("tps").executes(ctx -> {

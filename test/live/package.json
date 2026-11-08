@@ -1,0 +1,13 @@
+{
+  "name": "houserules-live-tests",
+  "private": true,
+  "description": "Live tests for HouseRules: throwaway Paper servers driven by protocol bots.",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "mineflayer": "4.39.0"
+  }
+}
