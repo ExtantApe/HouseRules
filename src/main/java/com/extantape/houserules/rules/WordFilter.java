@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  * {@code *} matches word endings too (swear* matches swearing). Words on the allow list are never flagged.
  */
 public final class WordFilter {
+    /** Players with this permission aren't filtered anywhere. Off for everyone by default, ops included. */
+    public static final String BYPASS = "houserules.filter.bypass";
     public static final WordFilter NONE = new WordFilter(List.of(), Set.of());
     private static final Pattern SPLIT = Pattern.compile("[^\\p{L}\\p{N}@$]+");
     private static final Pattern MARKS = Pattern.compile("\\p{M}+");

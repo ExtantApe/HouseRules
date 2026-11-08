@@ -4,6 +4,7 @@ import com.extantape.houserules.HouseRulesPlugin;
 import com.extantape.houserules.config.Settings;
 import com.extantape.houserules.rules.Reach;
 import com.extantape.houserules.rules.Subject;
+import com.extantape.houserules.rules.WordFilter;
 import com.extantape.houserules.text.Messages;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -40,7 +41,7 @@ public final class ChatListener implements Listener {
             plugin.tell(from, "chat-closed-here");
             return;
         }
-        if (settings.filtered().chat() && settings.filter().flags(PlainTextComponentSerializer.plainText().serialize(event.message()))) {
+        if (settings.filtered().chat() && !me.has(WordFilter.BYPASS) && settings.filter().flags(PlainTextComponentSerializer.plainText().serialize(event.message()))) {
             event.setCancelled(true);
             plugin.tell(from, "filtered-chat");
             return;

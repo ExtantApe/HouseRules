@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- `houserules.filter.bypass` lets a group skip the word filter in chat, private messages, signs, books and item names. It's off for everyone by default, ops included, and changes take effect without a relog.
+- `/houserules check` says when a player skips the word filter.
+
 ## 0.1.0
 
 First release.

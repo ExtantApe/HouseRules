@@ -3,6 +3,7 @@ package com.extantape.houserules.listen;
 import com.extantape.houserules.HouseRulesPlugin;
 import com.extantape.houserules.config.Settings;
 import com.extantape.houserules.rules.Subject;
+import com.extantape.houserules.rules.WordFilter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
@@ -83,7 +84,7 @@ public final class TextListener implements Listener {
         if (state == null) return "writing-paused";
         Settings settings = state.settings();
         if (!settings.reach().maySpeak(Subject.of(player))) return "writing-closed-here";
-        if (check.test(settings.filtered())) for (String part : text) if (settings.filter().flags(part)) return filteredKey;
+        if (check.test(settings.filtered()) && !player.hasPermission(WordFilter.BYPASS)) for (String part : text) if (settings.filter().flags(part)) return filteredKey;
         return null;
     }
 }

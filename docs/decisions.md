@@ -4,6 +4,7 @@ Owner decisions for HouseRules, newest first.
 
 | Date | Decision | Why |
 | --- | --- | --- |
+| 2026-11-08 | `houserules.filter.bypass` lets a group skip the word filter everywhere it applies: chat, private messages, signs, books and item names. Off for everyone by default, ops included. Granted to adult groups only; children stay filtered everywhere. | Adults never share a world with children, so filtering adults protects nobody. Off by default so nobody is unfiltered by accident. |
 | 2026-11-07 | Signs, books and item names follow the chat rule: where a player can't chat, they can't write either. A configurable word filter (`filter.yml`) checks chat, private messages, signs, books and item names. Blocked text is never logged or stored. | Covers everything players write, not just chat. Not logging matches the no-spying rule for moderators. |
 | 2026-11-07 | `/circles` is on for everyone by default and shows the names of people who can hear you. Both parts are permissions (`houserules.circles`, `houserules.circles.names`), so they can be changed per group. | Different groups of players, such as children and adults, never share a world, so a child only sees other children who are meant to be there. Hidden (vanished) players are never shown. |
 | 2026-11-07 | When someone chats and nobody can hear them, they get a funny, never mean, note from a large pool (`quips.yml`), shuffled so repeats are rare, at most once every 3 minutes by default. | Silence is confusing. A light note explains it without nagging. |

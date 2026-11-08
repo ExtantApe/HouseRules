@@ -8,6 +8,10 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
@@ -20,9 +24,21 @@ import java.util.Locale;
  *   hrt worlds                prints "HRT worlds <name,name,...>"
  *   hrt give <player> <item>  puts one item in the player's main hand
  */
-public final class LiveTestHelper extends JavaPlugin {
+public final class LiveTestHelper extends JavaPlugin implements Listener {
+    /** Bots stand still in made-up worlds, so a death only means a bad spawn point. Keep them alive, and say if one dies anyway. */
+    @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        getLogger().info("HRT death " + event.getPlayer().getName());
+    }
+
     @Override
     public void onEnable() {
+        getServer().getPluginManager().registerEvents(this, this);
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> event.registrar().register(Commands.literal("hrt")
                 .requires(src -> src.getSender().isOp() || !(src.getSender() instanceof Player))
                 .then(Commands.literal("world").then(Commands.argument("name", StringArgumentType.word()).executes(ctx -> {
