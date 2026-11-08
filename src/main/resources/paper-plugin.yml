@@ -16,6 +16,9 @@ permissions:
   houserules.bypass:
     description: Reach, and be reached by, everyone, for moderators. It doesn't show anyone else's chat.
     default: false
+  houserules.filter.bypass:
+    description: Skip the word filter in chat, private messages, signs, books and item names, for adult groups.
+    default: false
   houserules.circles:
     description: Use /circles to see your circles and who can hear you.
     default: true

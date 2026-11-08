@@ -3,6 +3,7 @@ package com.extantape.houserules.command;
 import com.extantape.houserules.HouseRulesPlugin;
 import com.extantape.houserules.rules.Reach;
 import com.extantape.houserules.rules.Subject;
+import com.extantape.houserules.rules.WordFilter;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -126,6 +127,7 @@ public final class HouseRulesCommands {
             case NOT_SHARED -> "they're in different world groups and share no circle";
         };
         if (!reach.maySpeak(a)) reason += ", and " + from.getName() + " can't chat where they are";
+        if (from.hasPermission(WordFilter.BYPASS)) reason += ". " + from.getName() + " skips the word filter";
         plugin.tell(sender, why.reaches && reach.maySpeak(a) ? "admin-check-yes" : "admin-check-no",
                 Map.of("from", from.getName(), "to", to.getName(), "reason", reason));
         return Command.SINGLE_SUCCESS;

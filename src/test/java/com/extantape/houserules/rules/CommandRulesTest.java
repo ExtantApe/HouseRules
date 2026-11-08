@@ -3,6 +3,7 @@ package com.extantape.houserules.rules;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -80,6 +81,26 @@ class CommandRulesTest {
         assertEquals("reply-cant-reach", run(alex, "/reply hi", far.id()).key());
         assertEquals("reply-offline", run(alex, "/r hi", UUID.randomUUID()).key());
         assertEquals("filtered-message", run(alex, "/r heck", sam.id()).key());
+    }
+
+    @Test
+    void filterBypassSkipsTheFilterForItsHolderOnly() {
+        Subject adult = add(player("Adult", "forest", WordFilter.BYPASS));
+        assertEquals(CommandRules.Kind.DELIVER, run(adult, "/msg Sam what the heck").kind());
+        assertEquals(CommandRules.Kind.DELIVER, run(adult, "/r heck", sam.id()).kind());
+        assertEquals("filtered-message", run(sam, "/msg Adult what the heck").key(), "the other player is still filtered");
+        assertEquals("message-cant-reach", run(adult, "/msg Far heck").key(), "the filter bypass doesn't widen reach");
+    }
+
+    @Test
+    void filterBypassIsReadAtEachMessage() {
+        Set<String> perms = new HashSet<>();
+        Subject changing = add(Subject.of(UUID.randomUUID(), "Changing", "forest", perms::contains));
+        assertEquals("filtered-message", run(changing, "/msg Sam heck").key());
+        perms.add(WordFilter.BYPASS);
+        assertEquals(CommandRules.Kind.DELIVER, run(changing, "/msg Sam heck").kind());
+        perms.remove(WordFilter.BYPASS);
+        assertEquals("filtered-message", run(changing, "/msg Sam heck").key());
     }
 
     @Test

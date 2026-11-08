@@ -181,12 +181,26 @@ async function filter() {
   const m = bots.R1.mark(); bots.R1.say('/msg R2 you are a b1tch');
   await sleep(1200);
   check('filtered private message is not delivered', !bots.R2.heard('b1tch', marks.R2) && bots.R1.heard("a word we don't use here", m));
+
+  section('Filter bypass for adult groups, granted and removed with LuckPerms, no relog');
+  await lp('user R1 permission set houserules.filter.bypass true');
+  let k = bots.R2.mark(); bots.R1.say('this is sh1t'); await sleep(1200);
+  check('with houserules.filter.bypass, chat is not filtered', bots.R2.heard('this is sh1t', k), bots.R2.lines(k));
+  k = bots.R2.mark(); bots.R1.say('/msg R2 that was sh1t'); await sleep(1200);
+  check('with houserules.filter.bypass, private messages are not filtered', bots.R2.heard('that was sh1t', k), bots.R2.lines(k));
+  k = bots.R1.mark(); const own = bots.R2.mark(); bots.R2.say('this is sh1t too'); await sleep(1200);
+  check('players without it are still filtered', !bots.R1.heard('sh1t too', k) && bots.R2.heard("a word we don't use here", own), bots.R2.lines(own));
+  await lp('user R1 permission unset houserules.filter.bypass');
+  k = bots.R2.mark(); const told = bots.R1.mark(); bots.R1.say('this is sh1t again'); await sleep(1200);
+  check('removing it filters again straight away', !bots.R2.heard('sh1t again', k) && bots.R1.heard("a word we don't use here", told));
 }
 
 async function writing() {
   section('Signs, books and item names');
   // Book: give a writable book and edit it, as the client does.
-  for (const [who, text, wantBlocked, why] of [['N1', 'a lovely story', false, 'clean text'], ['R2', 'what the fuck', true, 'filtered word'], ['N2', 'hello from the hall', true, 'circle-only world, no circle']]) {
+  for (const [who, text, wantBlocked, why, bypass] of [['N1', 'a lovely story', false, 'clean text'], ['R2', 'what the fuck', true, 'filtered word'],
+    ['R1', 'what the fuck', false, 'filtered word with houserules.filter.bypass', true], ['N2', 'hello from the hall', true, 'circle-only world, no circle']]) {
+    if (bypass) await lp(`user ${who} permission set houserules.filter.bypass true`);
     await s.run(`hrt give ${who} writable_book`, /HRT give/);
     for (let i = 0; i < 40 && !bots[who].bot.inventory.slots[36]; i++) await sleep(100);
     const m = bots[who].mark();
@@ -198,6 +212,7 @@ async function writing() {
       const told = bots[who].heard(/book has a word|Writing on signs, books and item names opens/, m);
       check(`book edit, ${why}: ${wantBlocked ? 'refused and explained' : 'allowed'}`, told === wantBlocked, bots[who].lines(m));
     } catch (e) { skip(`book edit, ${why}`, 'the bot could not edit a book: ' + e.message); }
+    if (bypass) await lp(`user ${who} permission unset houserules.filter.bypass`);
   }
   // Signs and anvils need the client's own block placing and window handling, which the bot can't do reliably
   // through ViaBackwards. The rules for them are the same code path as books.
@@ -358,7 +373,7 @@ async function pausedOnBrokenStart() {
   section('Server log');
   const errors = s.errors().filter((l) => !/config.yml: isn't valid YAML|couldn't read its config|The config has problems|SEVERE.*HouseRules.*(YAML|paused|kept)/.test(l));
   check('no errors or exceptions in the log', errors.length === 0, errors.slice(0, 8).join(' || '));
-  check('no test player died and respawned elsewhere', !/ (was slain|was killed|died|drowned|fell)/.test(s.log), (s.log.match(/.*(was slain|was killed|died).*/) || [''])[0]);
+  check('no test player died and respawned elsewhere', !/HRT death /.test(s.log), (s.log.match(/.*HRT death .*/) || [''])[0]);
   const kicked = all().filter((b) => b.kicked);
   check('no test bot was kicked', kicked.length === 0, kicked.map((b) => b.name + ' ' + b.kicked));
   all().forEach((b) => b.quit());

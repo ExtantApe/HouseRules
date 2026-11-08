@@ -43,7 +43,8 @@ It takes about 4 minutes. The summary lists failures and skipped checks. The ful
 | Commands | Blocked commands in plain, namespaced and mixed-case forms, unlisted ones passing, `/me` off except with bypass. |
 | Replies | `/r` with nobody to reply to, and after the other player moves out of reach. |
 | Word filter | Chat and private messages with a blocked word aren't delivered; "Scunthorpe has a classic assassin" is. |
-| Books | A clean edit is kept; a filtered one, or one in a circle-only world with no circle, is refused with an explanation. |
+| Filter bypass | Granted with LuckPerms, a player's chat and private messages aren't filtered while another player's still are; removed, they're filtered again straight away, with no relog. |
+| Books | A clean edit is kept; a filtered one, or one in a circle-only world with no circle, is refused with an explanation. A filtered word is kept for a player with `houserules.filter.bypass`. |
 | Nobody heard you | A note from `quips.yml`, a different one next time, and none when someone heard. |
 | Share (mocked) | Recipients filtered exactly as chat, and cancelled for a no-circle sender in a circle-only world. |
 | LuckPerms | A circle granted or removed takes effect with no relog. |
@@ -52,4 +53,4 @@ It takes about 4 minutes. The summary lists failures and skipped checks. The ful
 
 ## The test-only plugins
 
-`helper/` makes worlds, moves players, gives items and reports TPS, with one console command, `/hrt`. `fakehud/` is the BlueMapHUD stand-in. Both are built by `./gradlew build` and never shipped. Never install either on a real server.
+`helper/` makes worlds, moves players, gives items and reports TPS, with one console command, `/hrt`. It also stops test players taking damage, since a bot that spawns inside a block in a made-up Nether would otherwise die and respawn in the wrong world. `fakehud/` is the BlueMapHUD stand-in. Both are built by `./gradlew build` and never shipped. Never install either on a real server.

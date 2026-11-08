@@ -95,7 +95,7 @@ public final class CommandRules {
             Subject to = online.apply(args[0]);
             if (to == null || to.id().equals(from.id())) return Decision.PASS;
             if (!reach.mayReach(from, to)) return Decision.block("message-cant-reach", Map.of("player", to.name()));
-            if (flagged(args, 1)) return Decision.block("filtered-message", Map.of());
+            if (flagged(from, args, 1)) return Decision.block("filtered-message", Map.of());
             return Decision.deliver(to);
         }
 
@@ -106,14 +106,15 @@ public final class CommandRules {
             Subject to = byId.apply(partner);
             if (to == null) return Decision.block("reply-offline", Map.of());
             if (!reach.mayReach(from, to)) return Decision.block("reply-cant-reach", Map.of("player", to.name()));
-            if (flagged(args, 0)) return Decision.block("filtered-message", Map.of());
+            if (flagged(from, args, 0)) return Decision.block("filtered-message", Map.of());
             return Decision.deliver(to);
         }
         return Decision.PASS;
     }
 
-    private boolean flagged(String[] args, int from) {
-        return filterMessages && from < args.length && filter.flags(String.join(" ", Arrays.copyOfRange(args, from, args.length)));
+    private boolean flagged(Subject sender, String[] args, int from) {
+        return filterMessages && from < args.length && !sender.has(WordFilter.BYPASS)
+                && filter.flags(String.join(" ", Arrays.copyOfRange(args, from, args.length)));
     }
 
     static boolean matches(Set<String> entries, String label) {
