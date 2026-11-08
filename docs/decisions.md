@@ -1,0 +1,14 @@
+# Decisions
+
+Owner decisions for HouseRules, newest first.
+
+| Date | Decision | Why |
+| --- | --- | --- |
+| 2026-11-07 | Signs, books and item names follow the chat rule: where a player can't chat, they can't write either. A configurable word filter (`filter.yml`) checks chat, private messages, signs, books and item names. Blocked text is never logged or stored. | Covers everything players write, not just chat. Not logging matches the no-spying rule for moderators. |
+| 2026-11-07 | `/circles` is on for everyone by default and shows the names of people who can hear you. Both parts are permissions (`houserules.circles`, `houserules.circles.names`), so they can be changed per group. | Different groups of players, such as children and adults, never share a world, so a child only sees other children who are meant to be there. Hidden (vanished) players are never shown. |
+| 2026-11-07 | When someone chats and nobody can hear them, they get a funny, never mean, note from a large pool (`quips.yml`), shuffled so repeats are rare, at most once every 3 minutes by default. | Silence is confusing. A light note explains it without nagging. |
+| 2026-11-07 | `houserules.bypass` lets a moderator reach, and be reached by, everyone. It shows nobody else's chat and logs nothing. Off for everyone by default, ops included. | Moderation without chat spying. Off by default so nobody can reach children by accident. |
+| 2026-11-07 | `/r` and `/reply` check reach again at the moment of the reply. | The other player may have moved to a world out of reach since the conversation started. |
+| 2026-11-07 | No `/sort` block in the defaults. | Portmanteau, the planned ChestSort replacement, keeps automatic sorting on by itself, and none of its commands turn it off. |
+| 2026-11-07 | `/hud share` from BlueMapHUD follows the same reach as chat, with no narrower rule for kids. | One rule for everything players send each other. |
+| 2026-11-07 | Every list is in config, including circles, circle-only worlds, world groups, the dimension suffixes, message and reply commands, blocked commands and every message. With no circles, chat is vanilla. | Generic and publishable, with no server's names in the code. |

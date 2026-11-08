@@ -1,0 +1,5 @@
+name: HouseRulesLiveTest
+version: '1'
+main: com.extantape.houserules.livetest.LiveTestHelper
+api-version: '26.1'
+description: Test only. Makes small worlds, moves players and reports tick times for the HouseRules live tests. Never install on a real server.

@@ -1,0 +1,97 @@
+# HouseRules settings. After editing, run /houserules reload.
+# Messages use MiniMessage: https://docs.advntr.dev/minimessage/format.html
+config-version: 1
+
+# Chat circles. Players who share a circle hear each other from any world.
+# A player is in a circle if they have the permission houserules.circle.<name>, and can be in more than one.
+# With no circles listed, HouseRules doesn't limit chat at all: everyone hears everyone, as in vanilla.
+# For example:
+#   circles:
+#     - family
+#     - guests
+circles: []
+
+# Everywhere else, players in the same world also hear each other. In these worlds, only a shared circle counts,
+# and a player with no circle can't chat or write at all. Useful for a lobby where new players wait to be approved.
+circle-only-worlds: []
+
+# Worlds that count as one for chat. A world not listed here joins the world it's named after when its name ends
+# with one of the dimension-suffixes below, so "survival_nether" goes with "survival".
+#   world-groups:
+#     creative:
+#       - creative
+#       - creative_flat
+world-groups: {}
+dimension-suffixes:
+  - _nether
+  - _the_end
+
+# Commands that send a private message to the player named straight after the command.
+# Each also covers its namespaced forms, such as minecraft:msg. Add your chat plugin's commands if they differ.
+private-message-commands:
+  - msg
+  - tell
+  - w
+  - whisper
+  - pm
+  - dm
+# Commands that reply to the last person you messaged. HouseRules checks again at the moment you reply,
+# because the other player may have moved.
+reply-commands:
+  - r
+  - reply
+
+# Commands that reach everyone on the server regardless of world. While circles are in use they're off for
+# players without houserules.bypass, because they'd go past the circles.
+broadcast-commands:
+  - me
+  - teammsg
+  - tm
+
+# Commands that are always off, each with its own message. A command without a namespace also blocks its
+# namespaced forms: "sort" blocks "anyplugin:sort". Leave a message empty to block without a word.
+#   blocked-commands:
+#     - commands: [sethome, home]
+#       message: "<gray>Homes are off on this server. Ask a grown-up to help you build a path back!"
+blocked-commands: []
+
+# A light-hearted note when someone chats and nobody online can hear them. The notes are in quips.yml.
+nobody-heard:
+  enabled: true
+  # The least time between notes for one player.
+  cooldown-seconds: 180
+
+# Everything players read. Keep the words kind and say what to do instead. Colours are only decoration:
+# nothing depends on telling red from green. Leave a message empty ("") to turn it off.
+messages:
+  chat-paused: "<gray>Chat is paused for a moment while an admin fixes a settings problem. Please try again soon."
+  chat-closed-here: "<gray>Chat opens here once you've joined a circle. An admin can add you."
+  filtered-chat: "<gray>That message has a word we don't use here, so it wasn't sent. Try saying it another way!"
+  broadcast-off: "<white><command></white><gray> would reach everyone on the server, so it's off here. Just chat normally and the people who can hear you will see it."
+  message-selector: "<gray>Private messages go to one person by name, like <white>/msg Alex hello</white>."
+  message-cant-reach: "<white><player></white><gray> can't hear you from where you are, so your message wasn't sent. Type <white>/circles</white> to see who can."
+  filtered-message: "<gray>That message has a word we don't use here, so it wasn't sent. Try saying it another way!"
+  reply-nobody: "<gray>There's nobody to reply to yet. Use <white>/msg</white> and a name to start a conversation."
+  reply-offline: "<gray>The person you were talking to has left, so your reply wasn't sent."
+  reply-cant-reach: "<white><player></white><gray> has moved somewhere they can't hear you, so your reply wasn't sent. Type <white>/circles</white> to see who can."
+  share-closed-here: "<gray>Sharing where you are opens here once you've joined a circle."
+  writing-paused: "<gray>Writing is paused for a moment while an admin fixes a settings problem. Please try again soon."
+  writing-closed-here: "<gray>Writing on signs, books and item names opens here once you've joined a circle."
+  filtered-sign: "<gray>That sign has a word we don't use here, so it wasn't saved. Try different words!"
+  filtered-book: "<gray>That book has a word we don't use here, so your changes weren't saved. Try different words!"
+  filtered-item-name: "<gray>That name has a word we don't use here. Try a different one!"
+  circles-off: "<gray>Everyone on the server can hear you."
+  circles-none: "<gray>You're not in any circles, so only people in the same world can hear you."
+  circles-yours: "<gray>Your circles: <white><circles></white>"
+  circles-nobody: "<gray>Nobody else online can hear you right now."
+  circles-hearers: "<gray>People online who can hear you (<white><count></white>): <white><names></white>"
+  circles-hearers-count: "<gray>People online who can hear you: <white><count></white>"
+  admin-paused: "<gray>[HouseRules] Chat and private messages are paused because the config couldn't be read. Fix it, then run <white>/houserules reload</white>. The console says what's wrong."
+  admin-warnings: "<gray>[HouseRules] The config has <white><count></white> warning(s). Run <white>/houserules status</white> to see them."
+  admin-reloaded: "<gray>[HouseRules] Reloaded."
+  admin-reload-failed: "<gray>[HouseRules] The config has problems, so nothing changed. The old rules are still in place."
+  admin-reload-failed-paused: "<gray>[HouseRules] The config still has problems, so chat stays paused."
+  admin-problem: "<gray>  - <problem>"
+  admin-status: "<gray>[HouseRules] Circles: <white><circles></white>. Word filter: <white><filter></white>."
+  admin-check-yes: "<white><from></white><gray> can reach <white><to></white><gray>: <reason>."
+  admin-check-no: "<white><from></white><gray> can't reach <white><to></white><gray>: <reason>."
