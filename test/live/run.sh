@@ -16,7 +16,13 @@ if [ "${HR_ACCEPT_EULA:-}" != "1" ]; then
 fi
 JAR=$(ls "$REPO"/build/libs/HouseRules-*.jar 2>/dev/null | head -1)
 HELPER=$REPO/test/live/helper/build/libs/LiveTestHelper.jar
-FAKEHUD=$REPO/test/live/fakehud/build/libs/LiveTestFakeHud.jar
+# Which share stand-in to install: "new" (named BlueMinimap, the default) or "old" (named BlueMapHUD, 0.1.x).
+export HR_SHARE_PLUGIN=${HR_SHARE_PLUGIN:-new}
+case "$HR_SHARE_PLUGIN" in
+  new) FAKEHUD=$REPO/test/live/fakeminimap/build/libs/LiveTestFakeMinimap.jar ;;
+  old) FAKEHUD=$REPO/test/live/fakehud/build/libs/LiveTestFakeHud.jar ;;
+  *) echo "HR_SHARE_PLUGIN must be new or old"; exit 2 ;;
+esac
 missing=0
 for f in "$WORK/paper-$VERSION.jar" "$WORK/ViaVersion.jar" "$WORK/ViaBackwards.jar" "$WORK/LuckPerms.jar"; do
   [ -f "$f" ] || { echo "Missing $f. Run test/live/fetch.sh $VERSION first."; missing=1; }

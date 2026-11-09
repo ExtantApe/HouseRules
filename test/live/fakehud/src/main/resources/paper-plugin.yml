@@ -1,4 +1,4 @@
-# Test only. A stand-in for BlueMapHUD that fires its share event, until the real one is released.
+# Test only. A stand-in for BlueMapHUD 0.1.x (BlueMinimap's old name) that fires its old share event.
 # Named BlueMapHUD so HouseRules finds it exactly as it would find the real plugin. Never install on a real server.
 name: BlueMapHUD
 version: '0.0.0-test'

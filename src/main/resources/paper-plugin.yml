@@ -7,7 +7,12 @@ website: https://github.com/ExtantApe/HouseRules
 # Commands are registered with Brigadier in code, so there is no commands section.
 dependencies:
   server:
-    # Optional. Only so HouseRules can see BlueMapHUD's share event class and filter /hud share like chat.
+    # Optional. Only so HouseRules can see BlueMinimap's share event class and filter /hud share like chat.
+    BlueMinimap:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    # BlueMinimap's name before 2026-11-09. Kept for one release.
     BlueMapHUD:
       load: BEFORE
       required: false
