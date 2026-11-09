@@ -326,7 +326,11 @@ async function pausedOnBrokenStart() {
   s.writeConfig('config.yml', 'circles: [red\nnope: : :');
   await s.start();
   check('the console explains the pause', /chat and private messages are paused until it's fixed/.test(s.log));
+  s.cmd('op R2'); await sleep(300);
   await join(['R1', 'R2']);
+  await sleep(800);
+  check('an admin joining is told chat is paused, and how to fix it', bots.R2.lines(0).some((l) => /paused because the config couldn't be read/.test(l)), bots.R2.lines(0).slice(-3).join(' | '));
+  check('a player who isn\'t an admin isn\'t', !bots.R1.lines(0).some((l) => /paused because the config couldn't be read/.test(l)));
   const m1 = bots.R1.mark(), m2 = bots.R2.mark();
   bots.R1.say('paused hello'); await sleep(1200);
   check('chat is paused, and the player is told', bots.R1.heard('Chat is paused for a moment', m1) && !bots.R2.heard('paused hello', m2));
@@ -336,6 +340,7 @@ async function pausedOnBrokenStart() {
   await reload();
   const k = bots.R2.mark(); bots.R1.say('back again'); await sleep(1200);
   check('fixing the config and reloading brings chat back', bots.R2.heard('back again', k));
+  s.cmd('deop R2');
 }
 
 (async () => {
@@ -372,6 +377,9 @@ async function pausedOnBrokenStart() {
   await pausedOnBrokenStart();
 
   section('Server log');
+  // README: "Blocked text is never logged or stored." The words the filter test used must not be in the server log.
+  const leaked = ['sh1t', 'b1tch'].filter((w) => s.log.toLowerCase().includes(w));
+  check('filtered words never reach the server log', leaked.length === 0, leaked.join(', '));
   const errors = s.errors().filter((l) => !/config.yml: isn't valid YAML|couldn't read its config|The config has problems|SEVERE.*HouseRules.*(YAML|paused|kept)/.test(l));
   check('no errors or exceptions in the log', errors.length === 0, errors.slice(0, 8).join(' || '));
   check('no test player died and respawned elsewhere', !/HRT death /.test(s.log), (s.log.match(/.*HRT death .*/) || [''])[0]);
