@@ -33,4 +33,4 @@ Each promise in the README, and the test that holds it to it. "Live" is `test/li
 
 **Skipped, with reasons:**
 - Sign text and anvil renames: bots can't place and edit signs or use an anvil. They're on the real-client list.
-- `ReachService` "safe from any thread": it reads the same immutable rules snapshot chat uses. A concurrency test would be overkill for a read of an immutable object; the live load test exercises it from the async chat thread.
+- `ReachService` "safe from any thread": it reads the rules from one snapshot that a reload swaps in whole (a `volatile` field with `final` contents), plus the two players' own permissions and world, the same reads async chat already makes. A dedicated concurrency test would be overkill; the live load test exercises the same path from the async chat thread with 20 bots.
