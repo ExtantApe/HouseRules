@@ -24,7 +24,7 @@ Otherwise they can't. A world group is a world with its Nether and End (`surviva
 - Private messages (`/msg`, `/tell`, `/w` and the others in `private-message-commands`) to someone out of reach aren't sent, and you're told who you can talk to instead.
 - `/r` and `/reply` are checked again when you reply, because the other player may have moved.
 - Commands that would reach the whole server, `/me` and `/teammsg` by default, are off while circles are in use.
-- BlueMapHUD's `/hud share`, if BlueMapHUD is installed, goes only to players who could hear you in chat.
+- BlueMinimap's `/hud share`, if BlueMinimap is installed, goes only to players who could hear you in chat. BlueMinimap was called BlueMapHUD up to 0.1.0; HouseRules 0.2.x still filters shares from BlueMapHUD 0.1.x, and that goes in the next release. Update the two together: BlueMinimap turns sharing off if HouseRules is older than 0.2.
 
 **Blocked commands.** Any command can be turned off, each with its own message. `sort` also blocks `anyplugin:sort`, in any letter case.
 

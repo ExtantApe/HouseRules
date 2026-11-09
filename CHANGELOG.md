@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0
+
+- Follows BlueMapHUD's rename to BlueMinimap (2026-11-08): coordinate shares from BlueMinimap 0.2 are filtered like chat. Shares from BlueMapHUD 0.1.x are still filtered for this one release, so the two can be updated in either order. Update both together: BlueMinimap 0.2 turns `/hud share` off when HouseRules is older than 0.2.
+- No change to chat, private messages, the word filter or circles.
+
 ## 0.1.1
 
 - `houserules.filter.bypass` lets a group skip the word filter in chat, private messages, signs, books and item names. It's off for everyone by default, ops included, and changes take effect without a relog.

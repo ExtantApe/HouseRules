@@ -1,0 +1,6 @@
+# Test only. A stand-in for BlueMinimap that fires its share event, the same way fakehud does for its old name.
+# Named BlueMinimap so HouseRules finds it exactly as it would find the real plugin. Never install on a real server.
+name: BlueMinimap
+version: '0.0.0-test'
+main: com.extantape.houserules.livetest.fakeminimap.FakeMinimap
+api-version: '26.1'
