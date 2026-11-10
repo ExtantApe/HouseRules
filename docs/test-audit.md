@@ -2,6 +2,25 @@
 
 Kept by this repo's owning session (Minecraft: Plugins Lead), per `~/Code/CLAUDE.md`, "Test self-audits". Newest first.
 
+## 2026-11-10: the --json console
+
+What's new: every `/houserules` command takes `--json <id>` (Signalbox format 1), and there's `/houserules describe`. Since the first audit, only CI changes had landed, so this covers the console alone.
+
+| Promise | Covered by |
+| --- | --- |
+| One answer line per request, including unknown subcommands, missing or extra arguments and bad player names | unit `ConsoleTest.everyBadRequestStillGetsExactlyOneAnswer`; live "an unknown subcommand still gets one answer" |
+| `describe` lists every command, format 1 | unit `describeListsEveryCommandWithFormatOne`; live |
+| `check` gives both players with UUIDs, `reaches` and a stable reason code; someone who can't chat where they are reaches nobody | unit `checkGivesBothPlayersWithUuidsAndAStableReasonCode`, `someoneWhoCantSpeakThereReachesNobodyEvenInACircle`; live |
+| While chat is paused, `check` refuses rather than guess | unit `whilePausedCheckRefusesInsteadOfGuessing` |
+| An offline player is said plainly | unit `anOfflinePlayerIsSaidPlainly`; live |
+| `status` and `reload` report circles, filter, problems and whether a reload applied | unit; live `status` |
+| A player without `houserules.admin` gets nothing, `--json` or not | live "a player without houserules.admin gets no answer line" |
+| Without `--json`, the commands read as before | the existing live checks (`check explains a shared circle`, the reload checks), unchanged |
+
+Live suite: 67/67 on Paper 26.3 (2 skipped, as before). The test bots' two-letter names aren't valid Minecraft names, so the `--json` checks name them by UUID, which the format allows.
+
+**Skipped:** tab completion for the new single argument. It's convenience; Brigadier draws it.
+
 ## 2026-11-09: first full audit (at 0.2.0)
 
 Each promise in the README, and the test that holds it to it. "Live" is `test/live/suite.js` on throwaway Paper 26.2 and 26.3 with bots and LuckPerms; "unit" is `src/test`.

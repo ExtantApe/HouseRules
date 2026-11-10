@@ -1,9 +1,10 @@
 plugins {
     java
+    id("com.gradleup.shadow") version "9.6.1"
 }
 
 group = "com.extantape"
-version = "0.2.0"
+version = "0.3.0"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
@@ -12,6 +13,7 @@ java {
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://jitpack.io")
 }
 
 // Built against the oldest supported Paper, so nothing newer than 26.1 sneaks in.
@@ -23,6 +25,8 @@ dependencies {
     compileOnly(paperApi)
     // BlueMapHUD's share event, for the optional hook. Supplied at runtime by BlueMapHUD itself.
     compileOnly(project(":bluemaphud-stub"))
+    // The shared command format (--json, describe), shaded in below.
+    implementation("com.github.ExtantApe:Signalbox:v0.3.1")
 
     testImplementation(paperApi)
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
@@ -49,7 +53,13 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.jar {
+// Signalbox goes inside the jar, relocated, so it can never clash with another plugin's copy. The shaded jar is the
+// only jar built.
+tasks.shadowJar {
     archiveBaseName.set("HouseRules")
+    archiveClassifier.set("")
     from("LICENSE")
+    relocate("com.extantape.signalbox", "com.extantape.houserules.libs.signalbox")
 }
+tasks.jar { enabled = false }
+tasks.assemble { dependsOn(tasks.shadowJar) }
