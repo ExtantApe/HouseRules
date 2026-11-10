@@ -271,6 +271,24 @@ async function adminCheck() {
   check('check explains a shared circle', m && /R1 can reach R2: they share the circle red/.test(m[0]), m && m[0]);
   m = await s.run('houserules check N1 N3', /\w+ can(?:'t)? reach N3: [^\n]*/);
   check('check explains different worlds', m && /can't reach N3: they're in different world groups/.test(m[0]), m && m[0]);
+
+  section('/houserules --json (Signalbox format 1)');
+  const json = (c, id) => s.run(`houserules ${c} --json ${id}`, new RegExp(`ea-result ${id} (\\{[^\\n]*\\})`)).then((x) => x && JSON.parse(x[1]));
+  const d = await json('describe', 'hr1');
+  check('describe lists the four commands, format 1', d && d.ok && d.format === 1 && ['status', 'reload', 'check', 'describe'].every((n) => d.commands.some((c) => c.name === n)), JSON.stringify(d));
+  // The test bots' two-letter names aren't valid Minecraft names (3 to 16), so --json gets their offline UUIDs.
+  const uuidOf = (name) => { const h = require('crypto').createHash('md5').update('OfflinePlayer:' + name).digest(); h[6] = (h[6] & 0x0f) | 0x30; h[8] = (h[8] & 0x3f) | 0x80; const x = h.toString('hex'); return `${x.slice(0, 8)}-${x.slice(8, 12)}-${x.slice(12, 16)}-${x.slice(16, 20)}-${x.slice(20)}`; };
+  const c = await json(`check ${uuidOf('R1')} ${uuidOf('R2')}`, 'hr2');
+  check('check answers with both players, uuids and a reason code', c && c.ok && c.reaches === true && c.why === 'shared-circle' && /^[0-9a-f-]{36}$/.test(c.from.uuid), JSON.stringify(c));
+  const off = await json(`check ${uuidOf('R1')} Nobody`, 'hr3');
+  check('an offline player gets needs-online-player', off && off.ok === false && off.error.code === 'needs-online-player', JSON.stringify(off));
+  const st = await json('status', 'hr4');
+  check('status lists the circles and no problems', st && st.ok && st.paused === false && st.circles.includes('red'), JSON.stringify(st));
+  const bad = await json('frobnicate', 'hr5');
+  check('an unknown subcommand still gets one answer', bad && bad.ok === false && bad.error.code === 'unknown-command', JSON.stringify(bad));
+  // A player without houserules.admin: the command doesn't exist for them, --json or not.
+  const k = bots.N2.mark(); bots.N2.say('/houserules status --json hr6');
+  check('a player without houserules.admin gets no answer line', await bots.N2.waitFor(/Unknown or incomplete command/, 3000, k) && !s.log.includes('ea-result hr6'), bots.N2.lines(k));
 }
 
 async function brokenReload() {

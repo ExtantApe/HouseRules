@@ -53,6 +53,9 @@ If the config can't be read when the server starts, there are no rules to follow
 | `/houserules reload` | Reads `config.yml`, `filter.yml` and `quips.yml` again. |
 | `/houserules status` | Shows the circles, whether the filter is on, and any config warnings. |
 | `/houserules check <player> <player>` | Says whether the first can reach the second, and why. |
+| `/houserules describe` | Lists these admin commands. |
+
+Every `/houserules` command also takes `--json <id>` at the end, for scripts and the Leaf Juice app. It then answers with one `ea-result <id> {...}` line in the shared [Signalbox](https://github.com/ExtantApe/Signalbox) format: `status` gives the circles, the filter and any problems; `reload` whether the new rules were applied; `check` both players with their UUIDs, `reaches` and a reason code such as `shared-circle`; `describe` the commands. Players are named or given by UUID; selectors like `@p` aren't accepted.
 
 ## Permissions
 

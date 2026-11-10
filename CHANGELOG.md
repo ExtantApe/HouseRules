@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+- Every `/houserules` command takes `--json <id>` and answers with one line in the shared Signalbox format, for scripts and the Leaf Juice app. `/houserules describe` lists the commands. The command is still hidden from players without `houserules.admin`.
+- `/houserules check` takes player names or UUIDs. Selectors such as `@p` aren't accepted any more.
+- Tested on throwaway Paper 26.3 with bots: 67/67 live checks, 7 of them new for `--json`, and 8 new unit tests. Not seen in a real game client.
+
 ## 0.2.0
 
 - Follows BlueMapHUD's rename to BlueMinimap (2026-11-08): coordinate shares from BlueMinimap 0.2 are filtered like chat. Shares from BlueMapHUD 0.1.x are still filtered for this one release, so the two can be updated in either order. Update both together: BlueMinimap 0.2 turns `/hud share` off when HouseRules is older than 0.2.
