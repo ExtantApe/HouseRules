@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+- `ReachService.sharesCircle(viewerHas, to)`: for a viewer who isn't in game, such as someone on Mapkeeper's web map, only a shared circle counts (owner decision D54, 2026-11-10). World, world group and bypass don't, and with no circles set up nobody is reached.
+- Tested: 42 unit tests, 3 of them new, plus Mapkeeper's bot test with this jar on throwaway Paper 26.1.2 (25/25): an away kid sees only their circle, and in game chat's reach applies. Chat itself is unchanged and wasn't re-run live. Not seen in a real game client.
+
 ## 0.3.0
 
 - Every `/houserules` command takes `--json <id>` and answers with one line in the shared Signalbox format, for scripts and the Leaf Juice app. `/houserules describe` lists the commands. The command is still hidden from players without `houserules.admin`.
