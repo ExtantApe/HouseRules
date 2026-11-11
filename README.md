@@ -79,6 +79,8 @@ if (rules == null || rules.mayReach(from, to)) { /* send it */ }
 
 `mayReach(from, to)` and `maySpeak(player)` follow exactly the same rules as chat, and are safe from any thread.
 
+`sharesCircle(viewerHas, to)` is for a viewer who isn't in game, such as someone on a web map. It's true only when they share a circle with `to`. World, world group and bypass don't count, and with no circles set up it's always false. The caller passes the viewer's permissions, read while they're offline, and anything it can't check should answer false.
+
 ## Limits
 
 - Signs are readable by anyone who walks past, and a book or named item can be carried to another world. HouseRules only checks them when they're written.
