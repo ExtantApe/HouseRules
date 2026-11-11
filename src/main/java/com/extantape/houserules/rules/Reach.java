@@ -105,4 +105,20 @@ public final class Reach {
         }
         return null;
     }
+
+    /**
+     * For a viewer who isn't in game, such as someone on the web map (owner, 2026-11-10, D54): only a shared circle
+     * counts. Worlds, world groups and bypass don't, because the viewer has no world. With no circles set up, nobody is
+     * reached: there's no circle to share.
+     *
+     * @param viewer what the viewer is allowed, read by the caller while they're offline
+     */
+    public boolean reachesWhileAway(java.util.function.Predicate<String> viewer, Subject to) {
+        if (!active()) return false;
+        for (String circle : circles) {
+            String node = CIRCLE_PERMISSION + circle;
+            if (viewer.test(node) && to.has(node)) return true;
+        }
+        return false;
+    }
 }

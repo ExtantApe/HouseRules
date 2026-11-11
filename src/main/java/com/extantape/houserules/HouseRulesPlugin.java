@@ -180,4 +180,15 @@ public final class HouseRulesPlugin extends JavaPlugin implements ReachService {
         State s = state;
         return s != null && s.settings().reach().maySpeak(Subject.of(player));
     }
+
+    @Override
+    public boolean sharesCircle(java.util.function.Predicate<String> viewerHas, Player to) {
+        State s = state;
+        if (s == null || viewerHas == null || to == null) return false;
+        try {
+            return s.settings().reach().reachesWhileAway(viewerHas, Subject.of(to));
+        } catch (RuntimeException e) {
+            return false;
+        }
+    }
 }

@@ -84,4 +84,30 @@ class ReachTest {
                 player("n1", "forest"), player("n2", "hall"), player("n3", "meadow"));
         for (Subject a : all) for (Subject b : all) assertEquals(reach.mayReach(a, b), reach.mayReach(b, a), a.name() + "/" + b.name());
     }
+
+    // --- a viewer who isn't in game, such as the web map (D54) ---
+
+    @Test
+    void awayViewersSeeOnlyTheirCircle() {
+        java.util.function.Predicate<String> kidInRed = circle("red")::equals;
+        assertTrue(reach.reachesWhileAway(kidInRed, player("mum", "forest", circle("red"))));
+        assertFalse(reach.reachesWhileAway(kidInRed, player("stranger", "forest")), "the same world doesn't count");
+        assertFalse(reach.reachesWhileAway(kidInRed, player("blue", "meadow", circle("blue"))));
+        assertFalse(reach.reachesWhileAway(kidInRed, player("admin", "forest", Reach.BYPASS)), "bypass doesn't count either");
+    }
+
+    @Test
+    void anAwayViewerWithNoCircleOrNoRulesSeesNobody() {
+        assertFalse(reach.reachesWhileAway(p -> false, player("mum", "forest", circle("red"))));
+        assertFalse(reach.reachesWhileAway(p -> true, player("stranger", "forest")));
+        Reach off = new Reach(List.of(), Set.of(), Map.of(), List.of());
+        assertFalse(off.reachesWhileAway(p -> true, player("anyone", "forest", circle("red"))), "no circles: nothing to share");
+    }
+
+    @Test
+    void anAwayViewersOwnPermissionsAreTheOnlyOnesAsked() {
+        java.util.List<String> asked = new java.util.ArrayList<>();
+        reach.reachesWhileAway(p -> { asked.add(p); return false; }, player("mum", "forest", circle("red"), circle("blue")));
+        assertTrue(asked.stream().allMatch(p -> p.startsWith(Reach.CIRCLE_PERMISSION)), asked.toString());
+    }
 }
