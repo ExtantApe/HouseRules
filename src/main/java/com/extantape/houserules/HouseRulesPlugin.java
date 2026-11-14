@@ -7,7 +7,6 @@ import com.extantape.houserules.config.SettingsLoader;
 import com.extantape.houserules.listen.ChatListener;
 import com.extantape.houserules.listen.CommandListener;
 import com.extantape.houserules.listen.PlayerListener;
-import com.extantape.houserules.listen.LegacyShareHook;
 import com.extantape.houserules.listen.ShareHook;
 import com.extantape.houserules.listen.TextListener;
 import com.extantape.houserules.rules.Reach;
@@ -65,19 +64,12 @@ public final class HouseRulesPlugin extends JavaPlugin implements ReachService {
         plugins.registerEvents(new TextListener(this), this);
         plugins.registerEvents(new PlayerListener(this), this);
         // Only touch a share event's class when its plugin is installed. The hooks are the only classes that name them.
-        if (plugins.getPlugin("BlueMinimap") != null) {
+        if (plugins.getPlugin("BlueMapMini") != null) {
             try {
                 plugins.registerEvents(new ShareHook(this), this);
-                getLogger().info("BlueMinimap found: coordinate shares follow the same rules as chat.");
+                getLogger().info("BlueMapMini found: coordinate shares follow the same rules as chat.");
             } catch (LinkageError e) {
-                getLogger().warning("BlueMinimap is installed but has no share event this version can use, so shares aren't filtered. Update BlueMinimap and HouseRules together.");
-            }
-        } else if (plugins.getPlugin("BlueMapHUD") != null) {
-            try {
-                plugins.registerEvents(new LegacyShareHook(this), this);
-                getLogger().info("BlueMapHUD found: coordinate shares follow the same rules as chat. BlueMapHUD is now called BlueMinimap; support for the old name goes in the next release.");
-            } catch (LinkageError e) {
-                getLogger().warning("BlueMapHUD is installed but has no share event this version can use, so shares aren't filtered. Update it to BlueMinimap.");
+                getLogger().warning("BlueMapMini is installed but has no share event this version can use, so shares aren't filtered. Update BlueMapMini and HouseRules together.");
             }
         }
         getServer().getServicesManager().register(ReachService.class, this, this, ServicePriority.Normal);

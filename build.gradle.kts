@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.extantape"
-version = "0.4.0"
+version = "0.5.0"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
@@ -23,8 +23,8 @@ extra["paperApi"] = paperApi
 
 dependencies {
     compileOnly(paperApi)
-    // BlueMapHUD's share event, for the optional hook. Supplied at runtime by BlueMapHUD itself.
-    compileOnly(project(":bluemaphud-stub"))
+    // BlueMapMini's share event, for the optional hook. Supplied at runtime by BlueMapMini itself.
+    compileOnly(project(":bluemapmini-stub"))
     // The shared command format (--json, describe), shaded in below.
     implementation("com.github.ExtantApe:Signalbox:v0.3.1")
 

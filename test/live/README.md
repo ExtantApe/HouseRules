@@ -8,7 +8,7 @@ These run HouseRules on a real Paper server and drive it with protocol bots. The
 
 - **Real:** Paper, LuckPerms, the plugin jar, Paper's chat and command handling, and private messages through vanilla `/msg`, `/tell` and `/w`.
 - **A bot, not the game:** the players are [mineflayer](https://github.com/PrismarineJS/mineflayer) bots, which speak the 1.21.11 protocol and join 26.x through ViaVersion and ViaBackwards. They read chat as plain text, so colours and how the messages look aren't checked.
-- **Mocked:** BlueMinimap's share. A stand-in plugin fires a copy of its `CoordinateShareEvent`: by default one named BlueMinimap (`fakeminimap/`, the new event), or with `HR_SHARE_PLUGIN=old` one named BlueMapHUD (`fakehud/`, the event under its 0.1.x name). The new copy matches the event in BlueMinimap 0.2.0, compared with `javap` on 2026-11-09. The real BlueMinimap isn't run here. A separate check with the real BlueMapHUD 0.1.0 and HouseRules 0.1.0 jars passed on Paper 26.2 on 2026-11-08 (11 of 11, bots, permissions set without LuckPerms); that test isn't in this repo.
+- **Mocked:** BlueMapMini's share. A stand-in plugin named BlueMapMini (`fakeminimap/`) fires a copy of its `CoordinateShareEvent`.
 - **Not covered:** signs and anvil renames, which the bot can't do reliably. They go through the same check as books, which is covered. Paper has no `/r` of its own, so a reply that passes is seen as reaching the server, not as delivered.
 
 ## Setting up
@@ -53,4 +53,4 @@ It takes about 4 minutes. The summary lists failures and skipped checks. The ful
 
 ## The test-only plugins
 
-`helper/` makes worlds, moves players, gives items and reports TPS, with one console command, `/hrt`. It also stops test players taking damage, since a bot that spawns inside a block in a made-up Nether would otherwise die and respawn in the wrong world. `fakehud/` is the BlueMapHUD stand-in. Both are built by `./gradlew build` and never shipped. Never install either on a real server.
+`helper/` makes worlds, moves players, gives items and reports TPS, with one console command, `/hrt`. It also stops test players taking damage, since a bot that spawns inside a block in a made-up Nether would otherwise die and respawn in the wrong world. `fakeminimap/` is the BlueMapMini stand-in. Both are built by `./gradlew build` and never shipped. Never install either on a real server.

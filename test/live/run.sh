@@ -16,18 +16,12 @@ if [ "${HR_ACCEPT_EULA:-}" != "1" ]; then
 fi
 JAR=$(ls "$REPO"/build/libs/HouseRules-*.jar 2>/dev/null | head -1)
 HELPER=$REPO/test/live/helper/build/libs/LiveTestHelper.jar
-# Which share stand-in to install: "new" (named BlueMinimap, the default) or "old" (named BlueMapHUD, 0.1.x).
-export HR_SHARE_PLUGIN=${HR_SHARE_PLUGIN:-new}
-case "$HR_SHARE_PLUGIN" in
-  new) FAKEHUD=$REPO/test/live/fakeminimap/build/libs/LiveTestFakeMinimap.jar ;;
-  old) FAKEHUD=$REPO/test/live/fakehud/build/libs/LiveTestFakeHud.jar ;;
-  *) echo "HR_SHARE_PLUGIN must be new or old"; exit 2 ;;
-esac
+FAKEMAP=$REPO/test/live/fakeminimap/build/libs/LiveTestFakeMinimap.jar
 missing=0
 for f in "$WORK/paper-$VERSION.jar" "$WORK/ViaVersion.jar" "$WORK/ViaBackwards.jar" "$WORK/LuckPerms.jar"; do
   [ -f "$f" ] || { echo "Missing $f. Run test/live/fetch.sh $VERSION first."; missing=1; }
 done
-for f in "$JAR" "$HELPER" "$FAKEHUD"; do [ -n "$f" ] && [ -f "$f" ] || { echo "Missing a built jar. Run ./gradlew build first."; missing=1; }; done
+for f in "$JAR" "$HELPER" "$FAKEMAP"; do [ -n "$f" ] && [ -f "$f" ] || { echo "Missing a built jar. Run ./gradlew build first."; missing=1; }; done
 [ -d "$HERE/node_modules/mineflayer" ] || { echo "Run npm ci in test/live first."; missing=1; }
 [ $missing = 0 ] || exit 2
 if pgrep -f "server-[0-9.]*/.*paper-|paper-.*\.jar nogui" >/dev/null && [ -z "${HR_ALLOW_OTHER:-}" ]; then
@@ -60,7 +54,7 @@ view-distance=4
 simulation-distance=4
 motd=HouseRules throwaway test server
 PROPS
-cp "$WORK/ViaVersion.jar" "$WORK/ViaBackwards.jar" "$WORK/LuckPerms.jar" "$HELPER" "$FAKEHUD" "$SERVER/plugins/"
+cp "$WORK/ViaVersion.jar" "$WORK/ViaBackwards.jar" "$WORK/LuckPerms.jar" "$HELPER" "$FAKEMAP" "$SERVER/plugins/"
 cp "$JAR" "$SERVER/plugins/HouseRules.jar"
 cd "$HERE"
 LOG=$WORK/$NAME.log

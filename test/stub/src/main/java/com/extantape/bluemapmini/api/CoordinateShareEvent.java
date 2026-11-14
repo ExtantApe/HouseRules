@@ -1,4 +1,4 @@
-package com.extantape.blueminimap.api;
+package com.extantape.bluemapmini.api;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -9,8 +9,8 @@ import org.bukkit.event.HandlerList;
 import java.util.Set;
 
 /**
- * A copy of BlueMinimap's share event, matching the API BlueMinimap's session gave for 0.1.0, so HouseRules compiles
- * without BlueMinimap. The live tests also ship it in a stand-in plugin. Fired on the main thread just before a share.
+ * A copy of BlueMapMini's share event, so HouseRules compiles
+ * without BlueMapMini. The live tests also ship it in a stand-in plugin. Fired on the main thread just before a share.
  */
 public final class CoordinateShareEvent extends Event implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();

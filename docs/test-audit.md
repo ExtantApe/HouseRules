@@ -33,7 +33,7 @@ Each promise in the README, and the test that holds it to it. "Live" is `test/li
 | Private messages out of reach aren't sent; told who instead; selectors refused | live private-message matrix (every command), "/msg with a selector is refused" |
 | `/r` re-checked on reply | unit `replies`; live "Replies" |
 | `/me` and `/teammsg` off while circles are in use; bypass keeps them | unit `broadcastCommandsOffWhileCirclesAreOn`; live "Blocked and broadcast commands" |
-| BlueMinimap shares follow chat; old BlueMapHUD event for one release | live share section with `HR_SHARE_PLUGIN=new` and `old`; BlueMinimap's `test/live/houserules.js` with the real jars |
+| BlueMapMini shares follow chat | live share section, with a stand-in BlueMapMini firing the share event; BlueMapMini's own guard keeps sharing off with a HouseRules older than 0.5.0 |
 | Blocked commands in every form, own message | unit `blockedCommandsInEveryForm`; live |
 | Filter: whole words, disguises, allow list; Scunthorpe passes | unit `wholeWordsOnly`, `seesThroughDisguises`, `allowListWins`, `phrases`, `defaultList*`; live |
 | **Blocked text is never logged or stored** | **new** live "filtered words never reach the server log" (chat and `/msg`) |

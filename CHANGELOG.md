@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+- `/hud share` filtering follows BlueMapMini, the map plugin's new name (D194). HouseRules hooks BlueMapMini's share event and nothing else. The owner asked that no old names be kept (D196), so the hooks for the plugin's earlier names are gone.
+- Install it together with BlueMapMini 0.3.0. BlueMapMini keeps sharing off until HouseRules is 0.5.0 or newer, so shares can never skip chat circles.
+- Tested: unit tests pass, and the live share check now uses a stand-in named BlueMapMini. The real BlueMapMini 0.3.0 and HouseRules 0.5.0 haven't been run together yet.
+
 ## 0.4.0
 
 - `ReachService.sharesCircle(viewerHas, to)`: for a viewer who isn't in game, such as someone on Mapkeeper's web map, only a shared circle counts (owner decision D54, 2026-11-10). World, world group and bypass don't, and with no circles set up nobody is reached.

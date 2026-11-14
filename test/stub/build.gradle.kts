@@ -1,4 +1,4 @@
-// A copy of BlueMapHUD's CoordinateShareEvent, compile-only. Never shipped: BlueMapHUD supplies the real class.
+// A copy of BlueMapMini's CoordinateShareEvent, compile-only. Never shipped: BlueMapMini supplies the real class.
 plugins {
     java
 }

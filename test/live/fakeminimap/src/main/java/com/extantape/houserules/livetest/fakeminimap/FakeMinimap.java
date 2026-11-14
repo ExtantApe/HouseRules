@@ -1,6 +1,6 @@
 package com.extantape.houserules.livetest.fakeminimap;
 
-import com.extantape.blueminimap.api.CoordinateShareEvent;
+import com.extantape.bluemapmini.api.CoordinateShareEvent;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Test only. Console command "fakeshare <player>" fires CoordinateShareEvent the way BlueMinimap does, with every
+ * Test only. Console command "fakeshare <player>" fires CoordinateShareEvent the way BlueMapMini does, with every
  * other online player as a candidate, then logs "FAKESHARE <sender> cancelled=<bool> to=<names>".
  */
 public final class FakeMinimap extends JavaPlugin {

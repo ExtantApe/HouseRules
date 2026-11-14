@@ -241,8 +241,7 @@ async function nobodyHeard() {
 }
 
 async function share() {
-  const old = process.env.HR_SHARE_PLUGIN === 'old';
-  section(`${old ? 'BlueMapHUD (old name)' : 'BlueMinimap'} share (stand-in plugin, mocked)`);
+  section('BlueMapMini share (stand-in plugin, mocked)');
   let bad = [];
   for (const a of NAMES) {
     const m = await s.run(`fakeshare ${a}`, new RegExp(`FAKESHARE ${a} cancelled=(\\w+) listeners=(\\w+) to=(.*)`));
@@ -252,7 +251,7 @@ async function share() {
     if (want === null ? !cancelled : cancelled || JSON.stringify(to) !== JSON.stringify(want)) bad.push(`${a}: cancelled=${cancelled} to=${to} want ${want ?? 'cancelled'}`);
   }
   check('share recipients are filtered exactly as chat, and a no-circle sender in a circle-only world is cancelled', bad.length === 0, bad.join('; '));
-  check(`HouseRules registered for ${old ? 'the old' : 'the new'} share event`, (old ? /BlueMapHUD found/ : /BlueMinimap found/).test(s.log));
+  check('HouseRules registered for the share event', /BlueMapMini found/.test(s.log));
 }
 
 async function liveCircles() {

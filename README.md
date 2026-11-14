@@ -2,7 +2,7 @@
 
 Chat rules for family and community Paper servers. Players hear people in the same world, plus anyone who shares a "circle" with them, so groups such as families or age groups keep their own conversations across every world.
 
-**Status:** pre-release. It passes its acceptance tests on throwaway Paper 26.2 and 26.3 servers, using protocol bots with LuckPerms: chat and private messages for every pair of players, replies, blocked commands, the word filter and its bypass, books, `/circles`, reloads, a broken config, and 20 bots chatting at once. BlueMinimap's share was tested with a stand-in plugin here, and with the real BlueMinimap 0.2.0 and HouseRules 0.2.0 jars together on Paper 26.1.2, 26.2 and 26.3. Signs and anvil renames weren't tested. It hasn't been seen in a real game client yet, so the wording and colours haven't been checked by a person. See [the live tests](test/live/README.md) and the [test audit](docs/test-audit.md).
+**Status:** pre-release. It passes its acceptance tests on throwaway Paper 26.2 and 26.3 servers, using protocol bots with LuckPerms: chat and private messages for every pair of players, replies, blocked commands, the word filter and its bypass, books, `/circles`, reloads, a broken config, and 20 bots chatting at once. BlueMapMini's share was tested with a stand-in plugin here; the real BlueMapMini 0.3.0 and HouseRules 0.5.0 haven't been run together yet. Signs and anvil renames weren't tested. It hasn't been seen in a real game client yet, so the wording and colours haven't been checked by a person. See [the live tests](test/live/README.md) and the [test audit](docs/test-audit.md).
 
 - Requires Paper 26.1 or newer and Java 25. Paper 1.21.11 and older aren't supported.
 - With no circles set up it changes nothing about who hears whom, so it's safe to install first and configure after.
@@ -24,7 +24,7 @@ Otherwise they can't. A world group is a world with its Nether and End (`surviva
 - Private messages (`/msg`, `/tell`, `/w` and the others in `private-message-commands`) to someone out of reach aren't sent, and you're told who you can talk to instead.
 - `/r` and `/reply` are checked again when you reply, because the other player may have moved.
 - Commands that would reach the whole server, `/me` and `/teammsg` by default, are off while circles are in use.
-- BlueMinimap's `/hud share`, if BlueMinimap is installed, goes only to players who could hear you in chat. BlueMinimap was called BlueMapHUD up to 0.1.0; HouseRules 0.2.x still filters shares from BlueMapHUD 0.1.x, and that goes in the next release. Update the two together: BlueMinimap turns sharing off if HouseRules is older than 0.2.
+- BlueMapMini's `/hud share`, if BlueMapMini is installed, goes only to players who could hear you in chat. BlueMapMini keeps sharing off until HouseRules is 0.5.0 or newer.
 
 **Blocked commands.** Any command can be turned off, each with its own message. `sort` also blocks `anyplugin:sort`, in any letter case.
 
