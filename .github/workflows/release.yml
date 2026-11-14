@@ -35,4 +35,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           notes=$(awk -v v="${GITHUB_REF_NAME#v}" '$0 ~ "^## " v {f=1; next} /^## /{f=0} f' CHANGELOG.md)
-          gh release create "$GITHUB_REF_NAME" build/libs/HouseRules-*.jar --title "HouseRules ${GITHUB_REF_NAME#v}" --notes "$notes" --prerelease
+          gh release create "$GITHUB_REF_NAME" build/libs/Mayor-*.jar --title "Mayor ${GITHUB_REF_NAME#v}" --notes "$notes" --prerelease

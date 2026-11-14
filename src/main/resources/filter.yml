@@ -1,4 +1,4 @@
-# HouseRules word filter. After editing, run /houserules reload.
+# Mayor word filter. After editing, run /mayor reload.
 #
 # How words match:
 # - Whole words only, so "class", "assume" and "Scunthorpe" are fine.

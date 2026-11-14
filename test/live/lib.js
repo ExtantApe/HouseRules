@@ -1,7 +1,7 @@
-// Live test kit for HouseRules: server control and protocol bots. See README.md in this folder.
+// Live test kit for Mayor: server control and protocol bots. See README.md in this folder.
 const path = require('path'), fs = require('fs'), cp = require('child_process');
 const mineflayer = require('mineflayer');
-const ROOT = path.resolve(process.env.HR_LIVE_DIR || path.join(__dirname, 'work'));
+const ROOT = path.resolve(process.env.MAYOR_LIVE_DIR || path.join(__dirname, 'work'));
 const JAVA = process.env.JAVA || (process.env.JAVA_HOME ? path.join(process.env.JAVA_HOME, 'bin', 'java') : 'java');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -57,10 +57,10 @@ class Server {
     await sleep(500);
   }
   errors(from = 0) {
-    return this.log.slice(from).split('\n').filter((l) => /\bERROR\b|Exception|\bat com\.extantape|WARN\]: \[HouseRules\]/.test(l) && !/Advanced terminal/.test(l));
+    return this.log.slice(from).split('\n').filter((l) => /\bERROR\b|Exception|\bat com\.extantape|WARN\]: \[Mayor\]/.test(l) && !/Advanced terminal/.test(l));
   }
   path(...p) { return path.join(this.dir, ...p); }
-  writeConfig(name, text) { fs.writeFileSync(this.path('plugins/HouseRules', name), text); }
+  writeConfig(name, text) { fs.writeFileSync(this.path('plugins/Mayor', name), text); }
 }
 
 // ---- Bot ----

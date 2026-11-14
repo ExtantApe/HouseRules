@@ -15,3 +15,8 @@ Owner decisions for HouseRules, newest first.
 | 2026-11-10 | A viewer who isn't in game, such as someone on the web map, sees only players who share a HouseRules circle with them (owner, D54). | Chat's world rule needs a world, and an away viewer has none. |
 | 2026-11-07 | Every list is in config, including circles, circle-only worlds, world groups, the dimension suffixes, message and reply commands, blocked commands and every message. With no circles, chat is vanilla. | Generic and publishable, with no server's names in the code. |
 - **BlueMinimap (2026-11-08, owner rename of BlueMapHUD):** 0.2.0 listens for `com.extantape.blueminimap.api.CoordinateShareEvent` when BlueMinimap is installed, and still for the old `com.extantape.bluemaphud.api` event when only BlueMapHUD 0.1.x is, for one release. Released together with BlueMinimap 0.2.0, which turns sharing off when HouseRules is older than 0.2, so no order of upgrades lets a share skip the circles.
+
+## 2026-11-14
+
+- **Map plugin's new name (owner, D194, D196):** the share hook follows BlueMapMini only. No hooks or stand-ins for its earlier names are kept.
+- **Name (owner, D198):** the plugin is renamed Mayor. The owner chose "Mayor (Recommended)". Released as 0.5.0 with no old names kept, installed together with BlueMapMini 0.3.0.

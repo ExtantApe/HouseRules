@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0
+
+- **A new name: Mayor** (D198). The mayor sets how folks in town talk to each other. How it works is unchanged. As the owner asked (D196), no old names are kept: the package, plugin, jar, commands, permissions and data folder all use Mayor.
+- `/hud share` filtering follows BlueMapMini, the map plugin's new name (D194). Mayor hooks only BlueMapMini's share event; the hooks for its earlier names are gone.
+- Install it together with BlueMapMini 0.3.0, BlueMapAuth 0.2.0 and OneVoid, which find it by its new name. BlueMapMini keeps sharing off until Mayor 0.5.0 is installed, so shares can never skip chat circles.
+- To install over the previous version, with the server stopped: rename its plugin folder to `plugins/Mayor`, move its LuckPerms permissions to the matching `mayor.*` nodes (circles, bypass and filter bypass), then swap the jar.
+- Tested: unit tests pass, and the live share check uses a stand-in named BlueMapMini. The real BlueMapMini 0.3.0 and Mayor 0.5.0 haven't been run together yet.
+
 ## 0.4.0
 
 - `ReachService.sharesCircle(viewerHas, to)`: for a viewer who isn't in game, such as someone on Mapkeeper's web map, only a shared circle counts (owner decision D54, 2026-11-10). World, world group and bypass don't, and with no circles set up nobody is reached.

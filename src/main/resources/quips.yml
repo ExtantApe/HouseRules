@@ -1,6 +1,6 @@
 # Notes for players who chat when nobody online can hear them. One is picked at a time, in a shuffled
 # order, and a player sees every note before any comes round again. Keep them light-hearted, never mean.
-# MiniMessage formatting works. After editing, run /houserules reload. How often is set in config.yml.
+# MiniMessage formatting works. After editing, run /mayor reload. How often is set in config.yml.
 notes:
   - "<gray>Your words float off into the void. The void says thanks."
   - "<gray>A passing cloud heard that. Sadly, clouds don't type back."

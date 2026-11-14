@@ -1,6 +1,6 @@
 # Live tests
 
-These run HouseRules on a real Paper server and drive it with protocol bots. The unit tests in `src/test` cover the rules on their own; these cover everything that needs a server: chat, commands, permissions, reloads and load.
+These run Mayor on a real Paper server and drive it with protocol bots. The unit tests in `src/test` cover the rules on their own; these cover everything that needs a server: chat, commands, permissions, reloads and load.
 
 `run.sh` builds one throwaway server on 127.0.0.1, runs the whole suite, and deletes the server afterwards, including when a test fails. Only one server runs at a time. The worlds are small, flat and made up, and so are the players and circles.
 
@@ -8,7 +8,7 @@ These run HouseRules on a real Paper server and drive it with protocol bots. The
 
 - **Real:** Paper, LuckPerms, the plugin jar, Paper's chat and command handling, and private messages through vanilla `/msg`, `/tell` and `/w`.
 - **A bot, not the game:** the players are [mineflayer](https://github.com/PrismarineJS/mineflayer) bots, which speak the 1.21.11 protocol and join 26.x through ViaVersion and ViaBackwards. They read chat as plain text, so colours and how the messages look aren't checked.
-- **Mocked:** BlueMinimap's share. A stand-in plugin fires a copy of its `CoordinateShareEvent`: by default one named BlueMinimap (`fakeminimap/`, the new event), or with `HR_SHARE_PLUGIN=old` one named BlueMapHUD (`fakehud/`, the event under its 0.1.x name). The new copy matches the event in BlueMinimap 0.2.0, compared with `javap` on 2026-11-09. The real BlueMinimap isn't run here. A separate check with the real BlueMapHUD 0.1.0 and HouseRules 0.1.0 jars passed on Paper 26.2 on 2026-11-08 (11 of 11, bots, permissions set without LuckPerms); that test isn't in this repo.
+- **Mocked:** BlueMapMini's share. A stand-in plugin named BlueMapMini (`fakeminimap/`) fires a copy of its `CoordinateShareEvent`.
 - **Not covered:** signs and anvil renames, which the bot can't do reliably. They go through the same check as books, which is covered. Paper has no `/r` of its own, so a reply that passes is seen as reaching the server, not as delivered.
 
 ## Setting up
@@ -25,13 +25,13 @@ test/live/fetch.sh 26.2 26.3
 
 ## Running
 
-Running a server means accepting the [Minecraft EULA](https://aka.ms/MinecraftEULA), so `run.sh` won't start until you set `HR_ACCEPT_EULA=1`.
+Running a server means accepting the [Minecraft EULA](https://aka.ms/MinecraftEULA), so `run.sh` won't start until you set `MAYOR_ACCEPT_EULA=1`.
 
 ```bash
-HR_ACCEPT_EULA=1 test/live/run.sh 26.3
+MAYOR_ACCEPT_EULA=1 test/live/run.sh 26.3
 ```
 
-It takes about 4 minutes. The summary lists failures and skipped checks. The full output is in `test/live/work/server-<version>.log`, and the server console in `server-<version>-console.log`. The game port is 25619; change it with `HR_PORT`.
+It takes about 4 minutes. The summary lists failures and skipped checks. The full output is in `test/live/work/server-<version>.log`, and the server console in `server-<version>-console.log`. The game port is 25619; change it with `MAYOR_PORT`.
 
 ## What the suite checks
 
@@ -39,12 +39,12 @@ It takes about 4 minutes. The summary lists failures and skipped checks. The ful
 | --- | --- |
 | No config | A fresh install changes nothing: everyone hears everyone. |
 | Reach matrix | Eight players in two circles, with no circle, and with bypass, across two world groups (one by suffix, one listed), their Nether and End, and a circle-only world. Public chat from each, and 336 private messages over six commands, match an independent model of the rule. |
-| `/circles` | Lists your circles and exactly who can hear you, a count without `houserules.circles.names`, and an explanation in a circle-only world. |
+| `/circles` | Lists your circles and exactly who can hear you, a count without `mayor.circles.names`, and an explanation in a circle-only world. |
 | Commands | Blocked commands in plain, namespaced and mixed-case forms, unlisted ones passing, `/me` off except with bypass. |
 | Replies | `/r` with nobody to reply to, and after the other player moves out of reach. |
 | Word filter | Chat and private messages with a blocked word aren't delivered; "Scunthorpe has a classic assassin" is. |
 | Filter bypass | Granted with LuckPerms, a player's chat and private messages aren't filtered while another player's still are; removed, they're filtered again straight away, with no relog. |
-| Books | A clean edit is kept; a filtered one, or one in a circle-only world with no circle, is refused with an explanation. A filtered word is kept for a player with `houserules.filter.bypass`. |
+| Books | A clean edit is kept; a filtered one, or one in a circle-only world with no circle, is refused with an explanation. A filtered word is kept for a player with `mayor.filter.bypass`. |
 | Nobody heard you | A note from `quips.yml`, a different one next time, and none when someone heard. |
 | Share (mocked) | Recipients filtered exactly as chat, and cancelled for a no-circle sender in a circle-only world. |
 | LuckPerms | A circle granted or removed takes effect with no relog. |
@@ -53,4 +53,4 @@ It takes about 4 minutes. The summary lists failures and skipped checks. The ful
 
 ## The test-only plugins
 
-`helper/` makes worlds, moves players, gives items and reports TPS, with one console command, `/hrt`. It also stops test players taking damage, since a bot that spawns inside a block in a made-up Nether would otherwise die and respawn in the wrong world. `fakehud/` is the BlueMapHUD stand-in. Both are built by `./gradlew build` and never shipped. Never install either on a real server.
+`helper/` makes worlds, moves players, gives items and reports TPS, with one console command, `/mt`. It also stops test players taking damage, since a bot that spawns inside a block in a made-up Nether would otherwise die and respawn in the wrong world. `fakeminimap/` is the BlueMapMini stand-in. Both are built by `./gradlew build` and never shipped. Never install either on a real server.

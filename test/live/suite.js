@@ -1,4 +1,4 @@
-// The HouseRules acceptance tests, on one throwaway server. See README.md in this folder.
+// The Mayor acceptance tests, on one throwaway server. See README.md in this folder.
 // Usage: node suite.js <dir> <jar> <port>, relative to the work folder.
 const fs = require('fs'), path = require('path');
 const { sleep, check, skip, section, summary, Server, Bot } = require('./lib.js');
@@ -53,15 +53,15 @@ async function join(names) {
   for (const n of names) { bots[n] = new Bot(n, +port); await bots[n].spawned; await sleep(250); }
 }
 async function place() {
-  for (const [n, p] of Object.entries(PEOPLE)) await s.run(`hrt tp ${n} ${p.world}`, new RegExp(`HRT tp ${n} ${p.world} true`), 10000);
+  for (const [n, p] of Object.entries(PEOPLE)) await s.run(`mt tp ${n} ${p.world}`, new RegExp(`HRT tp ${n} ${p.world} true`), 10000);
   await sleep(1500);
 }
 async function worlds() {
-  for (const w of ['meadow', 'orchard', 'orchard_nether', 'hall', 'island']) await s.run(`hrt world ${w}`, new RegExp(`HRT world (${w}|FAILED)`), 60000);
-  const m = await s.run('hrt worlds', /HRT worlds (.*)/);
+  for (const w of ['meadow', 'orchard', 'orchard_nether', 'hall', 'island']) await s.run(`mt world ${w}`, new RegExp(`HRT world (${w}|FAILED)`), 60000);
+  const m = await s.run('mt worlds', /HRT worlds (.*)/);
   return m ? m[1].trim().split(',') : [];
 }
-async function reload() { return s.run('houserules reload', /\[HouseRules\] (Reloaded|The config has problems, so nothing changed|The config still has problems)[^\n]*/, 10000); }
+async function reload() { return s.run('mayor reload', /\[Mayor\] (Reloaded|The config has problems, so nothing changed|The config still has problems)[^\n]*/, 10000); }
 async function lp(cmd) { await s.run(`lp ${cmd}`, null); await sleep(400); }
 
 /** Each sender says one line; returns who heard it. */
@@ -133,10 +133,10 @@ async function circlesCommand() {
   const n = bots.N2.mark(); bots.N2.say('/circles');
   await sleep(1000);
   check('/circles in a circle-only world with no circle explains why', bots.N2.heard("You're not in any circles", n) && bots.N2.heard('Chat opens here', n), bots.N2.lines(n));
-  await lp('user R1 permission set houserules.circles.names false');
+  await lp('user R1 permission set mayor.circles.names false');
   const k = bots.R1.mark(); bots.R1.say('/circles');
-  check('without houserules.circles.names, only a count', await bots.R1.waitFor(/People online who can hear you: \d+$/, 3000, k), bots.R1.lines(k));
-  await lp('user R1 permission unset houserules.circles.names');
+  check('without mayor.circles.names, only a count', await bots.R1.waitFor(/People online who can hear you: \d+$/, 3000, k), bots.R1.lines(k));
+  await lp('user R1 permission unset mayor.circles.names');
 }
 
 async function blockedCommands() {
@@ -159,15 +159,15 @@ async function blockedCommands() {
 
 async function replies() {
   section('Replies');
-  // Paper has no /r of its own, so "passes" means HouseRules let it through to the server.
+  // Paper has no /r of its own, so "passes" means Mayor let it through to the server.
   bots.R1.say('/msg N1 start'); await sleep(800);
   let m = bots.N1.mark(); bots.N1.say('/r still here');
   await sleep(1200);
   check('/r to someone still in reach passes', !bots.N1.heard(/reply wasn't sent/, m), bots.N1.lines(m));
-  await s.run('hrt tp R1 meadow', /HRT tp R1 meadow true/); await sleep(800);
+  await s.run('mt tp R1 meadow', /HRT tp R1 meadow true/); await sleep(800);
   m = bots.N1.mark(); bots.N1.say('/reply are you there');
   check('/reply after the other player moves out of reach is blocked and explained', await bots.N1.waitFor("R1 has moved somewhere they can't hear you", 3000, m), bots.N1.lines(m));
-  await s.run(`hrt tp R1 ${PEOPLE.R1.world}`, /HRT tp R1 world true/); await sleep(800);
+  await s.run(`mt tp R1 ${PEOPLE.R1.world}`, /HRT tp R1 world true/); await sleep(800);
 }
 
 async function filter() {
@@ -183,14 +183,14 @@ async function filter() {
   check('filtered private message is not delivered', !bots.R2.heard('b1tch', marks.R2) && bots.R1.heard("a word we don't use here", m));
 
   section('Filter bypass for adult groups, granted and removed with LuckPerms, no relog');
-  await lp('user R1 permission set houserules.filter.bypass true');
+  await lp('user R1 permission set mayor.filter.bypass true');
   let k = bots.R2.mark(); bots.R1.say('this is sh1t'); await sleep(1200);
-  check('with houserules.filter.bypass, chat is not filtered', bots.R2.heard('this is sh1t', k), bots.R2.lines(k));
+  check('with mayor.filter.bypass, chat is not filtered', bots.R2.heard('this is sh1t', k), bots.R2.lines(k));
   k = bots.R2.mark(); bots.R1.say('/msg R2 that was sh1t'); await sleep(1200);
-  check('with houserules.filter.bypass, private messages are not filtered', bots.R2.heard('that was sh1t', k), bots.R2.lines(k));
+  check('with mayor.filter.bypass, private messages are not filtered', bots.R2.heard('that was sh1t', k), bots.R2.lines(k));
   k = bots.R1.mark(); const own = bots.R2.mark(); bots.R2.say('this is sh1t too'); await sleep(1200);
   check('players without it are still filtered', !bots.R1.heard('sh1t too', k) && bots.R2.heard("a word we don't use here", own), bots.R2.lines(own));
-  await lp('user R1 permission unset houserules.filter.bypass');
+  await lp('user R1 permission unset mayor.filter.bypass');
   k = bots.R2.mark(); const told = bots.R1.mark(); bots.R1.say('this is sh1t again'); await sleep(1200);
   check('removing it filters again straight away', !bots.R2.heard('sh1t again', k) && bots.R1.heard("a word we don't use here", told));
 }
@@ -199,9 +199,9 @@ async function writing() {
   section('Signs, books and item names');
   // Book: give a writable book and edit it, as the client does.
   for (const [who, text, wantBlocked, why, bypass] of [['N1', 'a lovely story', false, 'clean text'], ['R2', 'what the fuck', true, 'filtered word'],
-    ['R1', 'what the fuck', false, 'filtered word with houserules.filter.bypass', true], ['N2', 'hello from the hall', true, 'circle-only world, no circle']]) {
-    if (bypass) await lp(`user ${who} permission set houserules.filter.bypass true`);
-    await s.run(`hrt give ${who} writable_book`, /HRT give/);
+    ['R1', 'what the fuck', false, 'filtered word with mayor.filter.bypass', true], ['N2', 'hello from the hall', true, 'circle-only world, no circle']]) {
+    if (bypass) await lp(`user ${who} permission set mayor.filter.bypass true`);
+    await s.run(`mt give ${who} writable_book`, /HRT give/);
     for (let i = 0; i < 40 && !bots[who].bot.inventory.slots[36]; i++) await sleep(100);
     const m = bots[who].mark();
     try {
@@ -212,7 +212,7 @@ async function writing() {
       const told = bots[who].heard(/book has a word|Writing on signs, books and item names opens/, m);
       check(`book edit, ${why}: ${wantBlocked ? 'refused and explained' : 'allowed'}`, told === wantBlocked, bots[who].lines(m));
     } catch (e) { skip(`book edit, ${why}`, 'the bot could not edit a book: ' + e.message); }
-    if (bypass) await lp(`user ${who} permission unset houserules.filter.bypass`);
+    if (bypass) await lp(`user ${who} permission unset mayor.filter.bypass`);
   }
   // Signs and anvils need the client's own block placing and window handling, which the bot can't do reliably
   // through ViaBackwards. The rules for them are the same code path as books.
@@ -223,8 +223,8 @@ async function writing() {
 async function nobodyHeard() {
   section('Nobody heard you');
   // The moderator's bypass would let them hear N3, which is right, so it's off for this part.
-  await lp('user M1 permission unset houserules.bypass');
-  await s.run('hrt tp N3 island', /HRT tp N3 island true/, 10000); await sleep(800);
+  await lp('user M1 permission unset mayor.bypass');
+  await s.run('mt tp N3 island', /HRT tp N3 island true/, 10000); await sleep(800);
   const m = bots.N3.mark(); bots.N3.say('anyone out there');
   await sleep(1500);
   const note = bots.N3.lines(m).find((l) => NOTES.includes(l));
@@ -236,13 +236,12 @@ async function nobodyHeard() {
   check('the next note is a different one', !!second && second !== note, `${note} / ${second}`);
   const r = bots.R1.mark(); bots.R1.say('someone hears this'); await sleep(1200);
   check('no note when someone heard you', !bots.R1.lines(r).some((l) => NOTES.includes(l)));
-  await s.run(`hrt tp N3 ${PEOPLE.N3.world}`, /HRT tp N3 meadow true/, 10000); await sleep(800);
-  await lp('user M1 permission set houserules.bypass true');
+  await s.run(`mt tp N3 ${PEOPLE.N3.world}`, /HRT tp N3 meadow true/, 10000); await sleep(800);
+  await lp('user M1 permission set mayor.bypass true');
 }
 
 async function share() {
-  const old = process.env.HR_SHARE_PLUGIN === 'old';
-  section(`${old ? 'BlueMapHUD (old name)' : 'BlueMinimap'} share (stand-in plugin, mocked)`);
+  section('BlueMapMini share (stand-in plugin, mocked)');
   let bad = [];
   for (const a of NAMES) {
     const m = await s.run(`fakeshare ${a}`, new RegExp(`FAKESHARE ${a} cancelled=(\\w+) listeners=(\\w+) to=(.*)`));
@@ -252,28 +251,28 @@ async function share() {
     if (want === null ? !cancelled : cancelled || JSON.stringify(to) !== JSON.stringify(want)) bad.push(`${a}: cancelled=${cancelled} to=${to} want ${want ?? 'cancelled'}`);
   }
   check('share recipients are filtered exactly as chat, and a no-circle sender in a circle-only world is cancelled', bad.length === 0, bad.join('; '));
-  check(`HouseRules registered for ${old ? 'the old' : 'the new'} share event`, (old ? /BlueMapHUD found/ : /BlueMinimap found/).test(s.log));
+  check('Mayor registered for the share event', /BlueMapMini found/.test(s.log));
 }
 
 async function liveCircles() {
   section('Circles granted and removed with LuckPerms, no relog');
-  await lp('user N3 permission set houserules.circle.red true');
+  await lp('user N3 permission set mayor.circle.red true');
   let { heard } = await chatRound(['N3'], 'lp1');
   check('N3 reaches the red circle as soon as it is granted', heard.N3.includes('R1') && heard.N3.includes('R2'), heard.N3);
-  await lp('user N3 permission unset houserules.circle.red');
+  await lp('user N3 permission unset mayor.circle.red');
   ({ heard } = await chatRound(['N3'], 'lp2'));
   check('and stops as soon as it is removed', !heard.N3.includes('R1'), heard.N3);
 }
 
 async function adminCheck() {
-  section('/houserules check');
-  let m = await s.run('houserules check R1 R2', /\w+ can(?:'t)? reach R2: [^\n]*/);
+  section('/mayor check');
+  let m = await s.run('mayor check R1 R2', /\w+ can(?:'t)? reach R2: [^\n]*/);
   check('check explains a shared circle', m && /R1 can reach R2: they share the circle red/.test(m[0]), m && m[0]);
-  m = await s.run('houserules check N1 N3', /\w+ can(?:'t)? reach N3: [^\n]*/);
+  m = await s.run('mayor check N1 N3', /\w+ can(?:'t)? reach N3: [^\n]*/);
   check('check explains different worlds', m && /can't reach N3: they're in different world groups/.test(m[0]), m && m[0]);
 
-  section('/houserules --json (Signalbox format 1)');
-  const json = (c, id) => s.run(`houserules ${c} --json ${id}`, new RegExp(`ea-result ${id} (\\{[^\\n]*\\})`)).then((x) => x && JSON.parse(x[1]));
+  section('/mayor --json (Signalbox format 1)');
+  const json = (c, id) => s.run(`mayor ${c} --json ${id}`, new RegExp(`ea-result ${id} (\\{[^\\n]*\\})`)).then((x) => x && JSON.parse(x[1]));
   const d = await json('describe', 'hr1');
   check('describe lists the four commands, format 1', d && d.ok && d.format === 1 && ['status', 'reload', 'check', 'describe'].every((n) => d.commands.some((c) => c.name === n)), JSON.stringify(d));
   // The test bots' two-letter names aren't valid Minecraft names (3 to 16), so --json gets their offline UUIDs.
@@ -286,14 +285,14 @@ async function adminCheck() {
   check('status lists the circles and no problems', st && st.ok && st.paused === false && st.circles.includes('red'), JSON.stringify(st));
   const bad = await json('frobnicate', 'hr5');
   check('an unknown subcommand still gets one answer', bad && bad.ok === false && bad.error.code === 'unknown-command', JSON.stringify(bad));
-  // A player without houserules.admin: the command doesn't exist for them, --json or not.
-  const k = bots.N2.mark(); bots.N2.say('/houserules status --json hr6');
-  check('a player without houserules.admin gets no answer line', await bots.N2.waitFor(/Unknown or incomplete command/, 3000, k) && !s.log.includes('ea-result hr6'), bots.N2.lines(k));
+  // A player without mayor.admin: the command doesn't exist for them, --json or not.
+  const k = bots.N2.mark(); bots.N2.say('/mayor status --json hr6');
+  check('a player without mayor.admin gets no answer line', await bots.N2.waitFor(/Unknown or incomplete command/, 3000, k) && !s.log.includes('ea-result hr6'), bots.N2.lines(k));
 }
 
 async function brokenReload() {
   section('Config: a broken reload keeps the old rules');
-  const good = fs.readFileSync(s.path('plugins/HouseRules/config.yml'), 'utf8');
+  const good = fs.readFileSync(s.path('plugins/Mayor/config.yml'), 'utf8');
   s.writeConfig('config.yml', 'circles: [red\nnope: : :');
   const m = await reload();
   check('a broken reload is reported and nothing changes', m && /The config has problems, so nothing changed/.test(m[0]), m && m[0]);
@@ -308,7 +307,7 @@ async function load() {
   const extra = [];
   for (let i = 0; i < 20; i++) { const b = new Bot(`L${String(i).padStart(2, '0')}`, +port); extra.push(b); }
   await Promise.all(extra.map((b) => b.spawned));
-  for (let i = 0; i < extra.length; i++) await lp(`user ${extra[i].name} permission set houserules.circle.${i % 2 ? 'red' : 'blue'} true`);
+  for (let i = 0; i < extra.length; i++) await lp(`user ${extra[i].name} permission set mayor.circle.${i % 2 ? 'red' : 'blue'} true`);
   await sleep(1000);
   const start = Date.now(), sent = [];
   for (let round = 0; round < 15; round++) {
@@ -316,7 +315,7 @@ async function load() {
     await sleep(1000);
   }
   await sleep(2000);
-  const tps = await s.run('hrt tps', /HRT tps ([\d.]+) mspt ([\d.]+)/);
+  const tps = await s.run('mt tps', /HRT tps ([\d.]+) mspt ([\d.]+)/);
   const latencies = [];
   for (const m of sent) {
     const i = +m.from.slice(1), mate = extra.find((b) => b.name !== m.from && (+b.name.slice(1)) % 2 === i % 2);
@@ -340,7 +339,7 @@ async function pausedOnBrokenStart() {
   section('Config: broken at startup pauses chat');
   all().forEach((b) => b.quit()); bots = {};
   await s.stop();
-  const good = fs.readFileSync(s.path('plugins/HouseRules/config.yml'), 'utf8');
+  const good = fs.readFileSync(s.path('plugins/Mayor/config.yml'), 'utf8');
   s.writeConfig('config.yml', 'circles: [red\nnope: : :');
   await s.start();
   check('the console explains the pause', /chat and private messages are paused until it's fixed/.test(s.log));
@@ -366,7 +365,7 @@ async function pausedOnBrokenStart() {
   await s.start();
   const have = await worlds();
   check('test worlds exist', ['world', 'world_nether', 'world_the_end', 'meadow', 'orchard_nether', 'hall'].every((w) => have.includes(w)), have);
-  check('HouseRules starts with no config as vanilla chat', /No circles are set up, so chat reaches everyone/.test(s.log));
+  check('Mayor starts with no config as vanilla chat', /No circles are set up, so chat reaches everyone/.test(s.log));
   await join(NAMES);
   await place();
   await vanilla();
@@ -374,8 +373,8 @@ async function pausedOnBrokenStart() {
   s.writeConfig('config.yml', CONFIG);
   check('reload applies the new config', /Reloaded/.test((await reload() || [''])[0]));
   for (const [n, p] of Object.entries(PEOPLE)) {
-    for (const c of p.circles) await lp(`user ${n} permission set houserules.circle.${c} true`);
-    if (p.bypass) await lp(`user ${n} permission set houserules.bypass true`);
+    for (const c of p.circles) await lp(`user ${n} permission set mayor.circle.${c} true`);
+    if (p.bypass) await lp(`user ${n} permission set mayor.bypass true`);
   }
   await sleep(1000);
 
@@ -398,7 +397,7 @@ async function pausedOnBrokenStart() {
   // README: "Blocked text is never logged or stored." The words the filter test used must not be in the server log.
   const leaked = ['sh1t', 'b1tch'].filter((w) => s.log.toLowerCase().includes(w));
   check('filtered words never reach the server log', leaked.length === 0, leaked.join(', '));
-  const errors = s.errors().filter((l) => !/config.yml: isn't valid YAML|couldn't read its config|The config has problems|SEVERE.*HouseRules.*(YAML|paused|kept)/.test(l));
+  const errors = s.errors().filter((l) => !/config.yml: isn't valid YAML|couldn't read its config|The config has problems|SEVERE.*Mayor.*(YAML|paused|kept)/.test(l));
   check('no errors or exceptions in the log', errors.length === 0, errors.slice(0, 8).join(' || '));
   check('no test player died and respawned elsewhere', !/HRT death /.test(s.log), (s.log.match(/.*HRT death .*/) || [''])[0]);
   const kicked = all().filter((b) => b.kicked);
