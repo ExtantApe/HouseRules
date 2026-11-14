@@ -3,9 +3,9 @@
 # Usage: test/live/fetch.sh <paper version>...   e.g. test/live/fetch.sh 26.2 26.3
 set -euo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd)
-WORK=${HR_LIVE_DIR:-$HERE/work}
+WORK=${MAYOR_LIVE_DIR:-$HERE/work}
 mkdir -p "$WORK/downloads"
-UA="houserules-live-tests"
+UA="mayor-live-tests"
 
 get() { # url, file, algorithm, expected hash
   local url=$1 file=$2 algo=$3 want=$4 got

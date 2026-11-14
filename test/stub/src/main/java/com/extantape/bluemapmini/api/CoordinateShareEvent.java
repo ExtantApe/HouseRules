@@ -9,7 +9,7 @@ import org.bukkit.event.HandlerList;
 import java.util.Set;
 
 /**
- * A copy of BlueMapMini's share event, so HouseRules compiles
+ * A copy of BlueMapMini's share event, so Mayor compiles
  * without BlueMapMini. The live tests also ship it in a stand-in plugin. Fired on the main thread just before a share.
  */
 public final class CoordinateShareEvent extends Event implements Cancellable {

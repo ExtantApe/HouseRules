@@ -1,6 +1,6 @@
 # Test only. A stand-in for BlueMapMini that fires its share event.
-# Named BlueMapMini so HouseRules finds it exactly as it would find the real plugin. Never install on a real server.
+# Named BlueMapMini so Mayor finds it exactly as it would find the real plugin. Never install on a real server.
 name: BlueMapMini
 version: '0.0.0-test'
-main: com.extantape.houserules.livetest.fakeminimap.FakeMinimap
+main: com.extantape.mayor.livetest.fakeminimap.FakeMinimap
 api-version: '26.1'

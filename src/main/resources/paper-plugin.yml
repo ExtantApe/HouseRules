@@ -1,30 +1,30 @@
-name: HouseRules
+name: Mayor
 version: '${version}'
-main: com.extantape.houserules.HouseRulesPlugin
+main: com.extantape.mayor.MayorPlugin
 api-version: '26.1'
 description: Sets who can hear whom in chat and private messages, with chat circles, blocked commands and a word filter.
-website: https://github.com/ExtantApe/HouseRules
+website: https://github.com/ExtantApe/Mayor
 # Commands are registered with Brigadier in code, so there is no commands section.
 dependencies:
   server:
-    # Optional. Only so HouseRules can see BlueMapMini's share event class and filter /hud share like chat.
+    # Optional. Only so Mayor can see BlueMapMini's share event class and filter /hud share like chat.
     BlueMapMini:
       load: BEFORE
       required: false
       join-classpath: true
 permissions:
-  houserules.bypass:
+  mayor.bypass:
     description: Reach, and be reached by, everyone, for moderators. It doesn't show anyone else's chat.
     default: false
-  houserules.filter.bypass:
+  mayor.filter.bypass:
     description: Skip the word filter in chat, private messages, signs, books and item names, for adult groups.
     default: false
-  houserules.circles:
+  mayor.circles:
     description: Use /circles to see your circles and who can hear you.
     default: true
-  houserules.circles.names:
+  mayor.circles.names:
     description: See names, not just a count, in /circles.
     default: true
-  houserules.admin:
-    description: Use /houserules reload, status and check, and hear about config problems on joining.
+  mayor.admin:
+    description: Use /mayor reload, status and check, and hear about config problems on joining.
     default: op

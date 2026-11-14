@@ -16,7 +16,7 @@ dependencies {
     compileOnly(rootProject.extra["paperApi"] as String)
 }
 
-// Ships the same copy of the share event that HouseRules compiles against.
+// Ships the same copy of the share event that Mayor compiles against.
 sourceSets.main {
     java.srcDir(rootProject.file("test/stub/src/main/java"))
 }

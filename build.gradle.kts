@@ -56,10 +56,10 @@ tasks.test {
 // Signalbox goes inside the jar, relocated, so it can never clash with another plugin's copy. The shaded jar is the
 // only jar built.
 tasks.shadowJar {
-    archiveBaseName.set("HouseRules")
+    archiveBaseName.set("Mayor")
     archiveClassifier.set("")
     from("LICENSE")
-    relocate("com.extantape.signalbox", "com.extantape.houserules.libs.signalbox")
+    relocate("com.extantape.signalbox", "com.extantape.mayor.libs.signalbox")
 }
 tasks.jar { enabled = false }
 tasks.assemble { dependsOn(tasks.shadowJar) }

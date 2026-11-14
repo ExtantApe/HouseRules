@@ -2,9 +2,11 @@
 
 ## 0.5.0
 
-- `/hud share` filtering follows BlueMapMini, the map plugin's new name (D194). HouseRules hooks BlueMapMini's share event and nothing else. The owner asked that no old names be kept (D196), so the hooks for the plugin's earlier names are gone.
-- Install it together with BlueMapMini 0.3.0. BlueMapMini keeps sharing off until HouseRules is 0.5.0 or newer, so shares can never skip chat circles.
-- Tested: unit tests pass, and the live share check now uses a stand-in named BlueMapMini. The real BlueMapMini 0.3.0 and HouseRules 0.5.0 haven't been run together yet.
+- **A new name: Mayor** (D198). The mayor sets how folks in town talk to each other. How it works is unchanged. As the owner asked (D196), no old names are kept: the package, plugin, jar, commands, permissions and data folder all use Mayor.
+- `/hud share` filtering follows BlueMapMini, the map plugin's new name (D194). Mayor hooks only BlueMapMini's share event; the hooks for its earlier names are gone.
+- Install it together with BlueMapMini 0.3.0, BlueMapAuth 0.2.0 and OneVoid, which find it by its new name. BlueMapMini keeps sharing off until Mayor 0.5.0 is installed, so shares can never skip chat circles.
+- To install over the previous version, with the server stopped: rename its plugin folder to `plugins/Mayor`, move its LuckPerms permissions to the matching `mayor.*` nodes (circles, bypass and filter bypass), then swap the jar.
+- Tested: unit tests pass, and the live share check uses a stand-in named BlueMapMini. The real BlueMapMini 0.3.0 and Mayor 0.5.0 haven't been run together yet.
 
 ## 0.4.0
 

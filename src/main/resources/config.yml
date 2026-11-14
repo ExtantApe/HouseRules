@@ -1,10 +1,10 @@
-# HouseRules settings. After editing, run /houserules reload.
+# Mayor settings. After editing, run /mayor reload.
 # Messages use MiniMessage: https://docs.advntr.dev/minimessage/format.html
 config-version: 1
 
 # Chat circles. Players who share a circle hear each other from any world.
-# A player is in a circle if they have the permission houserules.circle.<name>, and can be in more than one.
-# With no circles listed, HouseRules doesn't limit chat at all: everyone hears everyone, as in vanilla.
+# A player is in a circle if they have the permission mayor.circle.<name>, and can be in more than one.
+# With no circles listed, Mayor doesn't limit chat at all: everyone hears everyone, as in vanilla.
 # For example:
 #   circles:
 #     - family
@@ -35,14 +35,14 @@ private-message-commands:
   - whisper
   - pm
   - dm
-# Commands that reply to the last person you messaged. HouseRules checks again at the moment you reply,
+# Commands that reply to the last person you messaged. Mayor checks again at the moment you reply,
 # because the other player may have moved.
 reply-commands:
   - r
   - reply
 
 # Commands that reach everyone on the server regardless of world. While circles are in use they're off for
-# players without houserules.bypass, because they'd go past the circles.
+# players without mayor.bypass, because they'd go past the circles.
 broadcast-commands:
   - me
   - teammsg
@@ -86,12 +86,12 @@ messages:
   circles-nobody: "<gray>Nobody else online can hear you right now."
   circles-hearers: "<gray>People online who can hear you (<white><count></white>): <white><names></white>"
   circles-hearers-count: "<gray>People online who can hear you: <white><count></white>"
-  admin-paused: "<gray>[HouseRules] Chat and private messages are paused because the config couldn't be read. Fix it, then run <white>/houserules reload</white>. The console says what's wrong."
-  admin-warnings: "<gray>[HouseRules] The config has <white><count></white> warning(s). Run <white>/houserules status</white> to see them."
-  admin-reloaded: "<gray>[HouseRules] Reloaded."
-  admin-reload-failed: "<gray>[HouseRules] The config has problems, so nothing changed. The old rules are still in place."
-  admin-reload-failed-paused: "<gray>[HouseRules] The config still has problems, so chat stays paused."
+  admin-paused: "<gray>[Mayor] Chat and private messages are paused because the config couldn't be read. Fix it, then run <white>/mayor reload</white>. The console says what's wrong."
+  admin-warnings: "<gray>[Mayor] The config has <white><count></white> warning(s). Run <white>/mayor status</white> to see them."
+  admin-reloaded: "<gray>[Mayor] Reloaded."
+  admin-reload-failed: "<gray>[Mayor] The config has problems, so nothing changed. The old rules are still in place."
+  admin-reload-failed-paused: "<gray>[Mayor] The config still has problems, so chat stays paused."
   admin-problem: "<gray>  - <problem>"
-  admin-status: "<gray>[HouseRules] Circles: <white><circles></white>. Word filter: <white><filter></white>."
+  admin-status: "<gray>[Mayor] Circles: <white><circles></white>. Word filter: <white><filter></white>."
   admin-check-yes: "<white><from></white><gray> can reach <white><to></white><gray>: <reason>."
   admin-check-no: "<white><from></white><gray> can't reach <white><to></white><gray>: <reason>."

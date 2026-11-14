@@ -1,6 +1,6 @@
 # Live tests
 
-These run HouseRules on a real Paper server and drive it with protocol bots. The unit tests in `src/test` cover the rules on their own; these cover everything that needs a server: chat, commands, permissions, reloads and load.
+These run Mayor on a real Paper server and drive it with protocol bots. The unit tests in `src/test` cover the rules on their own; these cover everything that needs a server: chat, commands, permissions, reloads and load.
 
 `run.sh` builds one throwaway server on 127.0.0.1, runs the whole suite, and deletes the server afterwards, including when a test fails. Only one server runs at a time. The worlds are small, flat and made up, and so are the players and circles.
 
@@ -25,13 +25,13 @@ test/live/fetch.sh 26.2 26.3
 
 ## Running
 
-Running a server means accepting the [Minecraft EULA](https://aka.ms/MinecraftEULA), so `run.sh` won't start until you set `HR_ACCEPT_EULA=1`.
+Running a server means accepting the [Minecraft EULA](https://aka.ms/MinecraftEULA), so `run.sh` won't start until you set `MAYOR_ACCEPT_EULA=1`.
 
 ```bash
-HR_ACCEPT_EULA=1 test/live/run.sh 26.3
+MAYOR_ACCEPT_EULA=1 test/live/run.sh 26.3
 ```
 
-It takes about 4 minutes. The summary lists failures and skipped checks. The full output is in `test/live/work/server-<version>.log`, and the server console in `server-<version>-console.log`. The game port is 25619; change it with `HR_PORT`.
+It takes about 4 minutes. The summary lists failures and skipped checks. The full output is in `test/live/work/server-<version>.log`, and the server console in `server-<version>-console.log`. The game port is 25619; change it with `MAYOR_PORT`.
 
 ## What the suite checks
 
@@ -39,12 +39,12 @@ It takes about 4 minutes. The summary lists failures and skipped checks. The ful
 | --- | --- |
 | No config | A fresh install changes nothing: everyone hears everyone. |
 | Reach matrix | Eight players in two circles, with no circle, and with bypass, across two world groups (one by suffix, one listed), their Nether and End, and a circle-only world. Public chat from each, and 336 private messages over six commands, match an independent model of the rule. |
-| `/circles` | Lists your circles and exactly who can hear you, a count without `houserules.circles.names`, and an explanation in a circle-only world. |
+| `/circles` | Lists your circles and exactly who can hear you, a count without `mayor.circles.names`, and an explanation in a circle-only world. |
 | Commands | Blocked commands in plain, namespaced and mixed-case forms, unlisted ones passing, `/me` off except with bypass. |
 | Replies | `/r` with nobody to reply to, and after the other player moves out of reach. |
 | Word filter | Chat and private messages with a blocked word aren't delivered; "Scunthorpe has a classic assassin" is. |
 | Filter bypass | Granted with LuckPerms, a player's chat and private messages aren't filtered while another player's still are; removed, they're filtered again straight away, with no relog. |
-| Books | A clean edit is kept; a filtered one, or one in a circle-only world with no circle, is refused with an explanation. A filtered word is kept for a player with `houserules.filter.bypass`. |
+| Books | A clean edit is kept; a filtered one, or one in a circle-only world with no circle, is refused with an explanation. A filtered word is kept for a player with `mayor.filter.bypass`. |
 | Nobody heard you | A note from `quips.yml`, a different one next time, and none when someone heard. |
 | Share (mocked) | Recipients filtered exactly as chat, and cancelled for a no-circle sender in a circle-only world. |
 | LuckPerms | A circle granted or removed takes effect with no relog. |
@@ -53,4 +53,4 @@ It takes about 4 minutes. The summary lists failures and skipped checks. The ful
 
 ## The test-only plugins
 
-`helper/` makes worlds, moves players, gives items and reports TPS, with one console command, `/hrt`. It also stops test players taking damage, since a bot that spawns inside a block in a made-up Nether would otherwise die and respawn in the wrong world. `fakeminimap/` is the BlueMapMini stand-in. Both are built by `./gradlew build` and never shipped. Never install either on a real server.
+`helper/` makes worlds, moves players, gives items and reports TPS, with one console command, `/mt`. It also stops test players taking damage, since a bot that spawns inside a block in a made-up Nether would otherwise die and respawn in the wrong world. `fakeminimap/` is the BlueMapMini stand-in. Both are built by `./gradlew build` and never shipped. Never install either on a real server.

@@ -18,4 +18,5 @@ Owner decisions for HouseRules, newest first.
 
 ## 2026-11-14
 
-- **Map plugin's new name (owner, D194, D196):** the share hook follows BlueMapMini only. No hooks or stand-ins for its earlier names are kept. Released as 0.5.0, installed together with BlueMapMini 0.3.0.
+- **Map plugin's new name (owner, D194, D196):** the share hook follows BlueMapMini only. No hooks or stand-ins for its earlier names are kept.
+- **Name (owner, D198):** the plugin is renamed Mayor. The owner chose "Mayor (Recommended)". Released as 0.5.0 with no old names kept, installed together with BlueMapMini 0.3.0.
